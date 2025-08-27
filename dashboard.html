@@ -19,40 +19,74 @@
       </nav>
     </header>
 
+    <!-- El main ahora tendrá un layout de dos columnas -->
     <main class="dashboard-container">
-      <div class="dashboard-header">
-        <h1>My Tasks (Eisenhower Matrix)</h1>
-        <button id="add-task-btn" class="btn btn-primary">Add New Task</button>
-      </div>
+      <!-- Columna Izquierda: Tareas -->
+      <section class="dashboard-column">
+        <div class="dashboard-header">
+          <h1>My Tasks (Eisenhower Matrix)</h1>
+          <button id="add-task-btn" class="btn btn-primary">
+            Add New Task
+          </button>
+        </div>
 
-      <!-- Aquí es donde JavaScript renderizará las tareas -->
-      <div id="task-matrix" class="task-matrix">
-        <!-- Dentro de <div id="task-matrix" class="task-matrix"> -->
-        <div class="quadrant important-urgent">
-          <h3 class="quadrant-title">Important & Urgent</h3>
-          <div id="tasks-iu" class="task-list">
-            <!-- Tareas generadas por JS irán aquí -->
+        <!-- Aquí es donde JavaScript renderizará las tareas -->
+        <div id="task-matrix" class="task-matrix">
+          <!-- Dentro de <div id="task-matrix" class="task-matrix"> -->
+          <div class="quadrant important-urgent">
+            <h3 class="quadrant-title">Important & Urgent</h3>
+            <div id="tasks-iu" class="task-list">
+              <!-- Tareas generadas por JS irán aquí -->
+            </div>
+          </div>
+          <div class="quadrant important-not-urgent">
+            <h3 class="quadrant-title">Important & Not Urgent</h3>
+            <div id="tasks-inu" class="task-list">
+              <!-- Tareas generadas por JS irán aquí -->
+            </div>
+          </div>
+          <div class="quadrant not-important-urgent">
+            <h3 class="quadrant-title">Not Important & Urgent</h3>
+            <div id="tasks-niu" class="task-list">
+              <!-- Tareas generadas por JS irán aquí -->
+            </div>
+          </div>
+          <div class="quadrant not-important-not-urgent">
+            <h3 class="quadrant-title">Not Important & Not Urgent</h3>
+            <div id="tasks-ninu" class="task-list">
+              <!-- Tareas generadas por JS irán aquí -->
+            </div>
           </div>
         </div>
-        <div class="quadrant important-not-urgent">
-          <h3 class="quadrant-title">Important & Not Urgent</h3>
-          <div id="tasks-inu" class="task-list">
-            <!-- Tareas generadas por JS irán aquí -->
+      </section>
+
+      <!-- Columna Derecha: Finanzas -->
+      <section class="dashboard-column">
+        <div class="dashboard-header">
+          <h1>My Finances</h1>
+          <!-- Dentro de la segunda .dashboard-column, dentro del .dashboard-header -->
+          <div class="finance-filters">
+            <label for="transaction-category-filter">Filter by:</label>
+            <select id="transaction-category-filter">
+              <option value="all">All Categories</option>
+              <!-- Las demás categorías se generarán dinámicamente con JavaScript -->
+            </select>
           </div>
+          <button id="add-transaction-btn" class="btn btn-primary">
+            Add Transaction
+          </button>
         </div>
-        <div class="quadrant not-important-urgent">
-          <h3 class="quadrant-title">Not Important & Urgent</h3>
-          <div id="tasks-niu" class="task-list">
-            <!-- Tareas generadas por JS irán aquí -->
-          </div>
+
+        <!-- Aquí mostraremos un resumen -->
+        <div id="finance-summary" class="finance-summary">
+          <!-- El resumen se generará con JS -->
         </div>
-        <div class="quadrant not-important-not-urgent">
-          <h3 class="quadrant-title">Not Important & Not Urgent</h3>
-          <div id="tasks-ninu" class="task-list">
-            <!-- Tareas generadas por JS irán aquí -->
-          </div>
+
+        <!-- Aquí irá la lista de transacciones -->
+        <div id="transaction-list" class="transaction-list">
+          <!-- Las transacciones se generarán con JS -->
         </div>
-      </div>
+      </section>
     </main>
 
     <!-- Aquí irá nuestro Modal para crear/editar tareas -->
@@ -144,6 +178,76 @@
             Yes, Delete
           </button>
         </div>
+      </div>
+    </div>
+    <!-- Modal para Crear/Editar Transacciones -->
+    <div id="transaction-modal" class="modal">
+      <div class="modal-content">
+        <span id="close-transaction-modal-btn" class="close-btn">&times;</span>
+        <h2 id="transaction-modal-title">Add New Transaction</h2>
+        <form id="transaction-form">
+          <input type="hidden" id="transaction-id" name="transactionId" />
+
+          <div class="form-group">
+            <label for="transaction-description">Description</label>
+            <input
+              type="text"
+              id="transaction-description"
+              name="description"
+              placeholder="e.g., Groceries, Salary"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="transaction-amount">Amount</label>
+            <input
+              type="number"
+              id="transaction-amount"
+              name="amount"
+              placeholder="0.00"
+              step="0.01"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Type</label>
+            <div class="radio-group">
+              <input
+                type="radio"
+                id="type-income"
+                name="type"
+                value="income"
+                required
+                checked
+              />
+              <label for="type-income">Income</label>
+              <input
+                type="radio"
+                id="type-expense"
+                name="type"
+                value="expense"
+              />
+              <label for="type-expense">Expense</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="transaction-category">Category</label>
+            <input
+              type="text"
+              id="transaction-category"
+              name="category"
+              placeholder="e.g., Food, Job"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full-width">
+            Save Transaction
+          </button>
+        </form>
       </div>
     </div>
   </body>

@@ -12,6 +12,16 @@ let mockTasks = [
     { id: 7, title: 'Renew library books', category: 'ninu' },
 ];
 
+// --- Mock Data para Finanzas ---
+let mockTransactions = [
+    { id: 101, description: 'Salary', amount: 2500, type: 'income', category: 'Job' },
+    { id: 102, description: 'Groceries', amount: 150, type: 'expense', category: 'Food' },
+    { id: 103, description: 'New book', amount: 20, type: 'expense', category: 'Education' },
+    { id: 104, description: 'Freelance Project', amount: 500, type: 'income', category: 'Side Hustle' },
+    { id: 105, description: 'Movie tickets', amount: 25, type: 'expense', category: 'Entertainment' },
+    { id: 106, description: 'Rent', amount: 800, type: 'expense', category: 'Housing' },
+];
+
 // Mapeo de categorías a los IDs de los contenedores del HTML
 const quadrantMap = {
     iu: 'tasks-iu',
@@ -50,8 +60,113 @@ function renderTasks(tasks) {
     });
 }
 
+// --- Funciones para Renderizar Finanzas ---
+
+const financeSummaryEl = document.getElementById('finance-summary');
+const transactionListEl = document.getElementById('transaction-list');
+
+// Función para calcular y mostrar el resumen
+function renderFinanceSummary(transactions) {
+    const totalIncome = transactions
+        .filter(t => t.type === 'income')
+        .reduce((sum, t) => sum + t.amount, 0);
+
+    const totalExpenses = transactions
+        .filter(t => t.type === 'expense')
+        .reduce((sum, t) => sum + t.amount, 0);
+
+    const balance = totalIncome - totalExpenses;
+
+    financeSummaryEl.innerHTML = `
+        <div class="summary-card">
+            <h4>Total Income</h4>
+            <p class="income">$${totalIncome.toFixed(2)}</p>
+        </div>
+        <div class="summary-card">
+            <h4>Total Expenses</h4>
+            <p class="expenses">$${totalExpenses.toFixed(2)}</p>
+        </div>
+        <div class="summary-card">
+            <h4>Balance</h4>
+            <p class="balance">$${balance.toFixed(2)}</p>
+        </div>
+    `;
+}
+
+// Función para mostrar la lista de transacciones
+function renderTransactions(transactions) {
+    // Limpiamos la lista primero
+    transactionListEl.innerHTML = '';
+
+    if (transactions.length === 0) {
+        transactionListEl.innerHTML = '<p class="no-transactions">No transactions yet.</p>';
+        return;
+    }
+    
+    transactions.forEach(t => {
+        const transactionEl = document.createElement('div');
+        transactionEl.className = 'transaction-item';
+        
+        const sign = t.type === 'income' ? '+' : '-';
+        const amountClass = t.type === 'income' ? 'income' : 'expenses';
+
+        transactionEl.innerHTML = `
+            <div class="transaction-details">
+                <span class="transaction-category">${t.category}</span>
+                <p class="transaction-description">${t.description}</p>
+            </div>
+            <div class="transaction-amount">
+                <p class="${amountClass}">${sign}$${t.amount.toFixed(2)}</p>
+            </div>
+        `;
+        transactionListEl.appendChild(transactionEl);
+    });
+}
+
+// --- Lógica del Filtro de Finanzas ---
+
+const categoryFilterEl = document.getElementById('transaction-category-filter');
+
+// Función para poblar el dropdown de filtro con categorías únicas
+function populateCategoryFilter(transactions) {
+    // Usamos un Set para obtener solo los nombres de categoría únicos
+    const categories = new Set(transactions.map(t => t.category));
+    
+    // Mantenemos la opción "All Categories" que ya está en el HTML
+    // y solo añadimos las nuevas
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        categoryFilterEl.appendChild(option);
+    });
+}
+
+// Event listener para cuando el usuario cambia la selección del filtro
+categoryFilterEl.addEventListener('change', function() {
+    const selectedCategory = categoryFilterEl.value;
+    
+    let filteredTransactions;
+
+    if (selectedCategory === 'all') {
+        // Si se selecciona "All", mostramos todas las transacciones
+        filteredTransactions = mockTransactions;
+    } else {
+        // Si se selecciona una categoría, filtramos el array
+        filteredTransactions = mockTransactions.filter(t => t.category === selectedCategory);
+    }
+
+    // Volvemos a renderizar la lista con las transacciones filtradas
+    // ¡OJO! Solo renderizamos la lista, no el resumen. El resumen siempre mostrará el total.
+    renderTransactions(filteredTransactions);
+});
+
 // Llamamos a la función cuando el script se carga para mostrar las tareas iniciales
 renderTasks(mockTasks);
+renderFinanceSummary(mockTransactions);
+renderTransactions(mockTransactions);
+populateCategoryFilter(mockTransactions); 
+
 
 // --- Lógica del Modal ---
 
@@ -204,4 +319,86 @@ confirmDeleteBtn.addEventListener('click', function() {
         renderTasks(mockTasks);
         closeDeleteModal(); // Cerramos el modal después de borrar
     }
+});
+
+// --- Lógica del Modal de Transacciones ---
+
+// 1. Obtener referencias a los nuevos elementos del DOM
+const transactionModal = document.getElementById('transaction-modal');
+const addTransactionBtn = document.getElementById('add-transaction-btn');
+const closeTransactionModalBtn = document.getElementById('close-transaction-modal-btn');
+const transactionForm = document.getElementById('transaction-form');
+const transactionModalTitle = document.getElementById('transaction-modal-title');
+const transactionIdInput = document.getElementById('transaction-id');
+
+// 2. Funciones para abrir y cerrar el modal
+function openTransactionModal() {
+    transactionModal.style.display = 'block';
+}
+
+function closeTransactionModal() {
+    transactionModal.style.display = 'none';
+    transactionForm.reset();
+    transactionIdInput.value = '';
+    transactionModalTitle.textContent = 'Add New Transaction';
+}
+
+// 3. Asignar los eventos a los botones
+addTransactionBtn.addEventListener('click', openTransactionModal);
+closeTransactionModalBtn.addEventListener('click', closeTransactionModal);
+
+// 4. Cerrar al hacer clic fuera
+window.addEventListener('click', function(event) {
+    if (event.target == transactionModal) {
+        closeTransactionModal();
+    }
+});
+
+// --- Lógica para Guardar Transacciones ---
+
+transactionForm.addEventListener('submit', function(event) {
+    // 1. Prevenimos que la página se recargue
+    event.preventDefault();
+
+    // 2. Recogemos los valores del formulario
+    const description = document.getElementById('transaction-description').value;
+    // Usamos parseFloat para convertir el texto del input en un número decimal
+    const amount = parseFloat(document.getElementById('transaction-amount').value);
+    const type = document.querySelector('input[name="type"]:checked').value;
+    const category = document.getElementById('transaction-category').value;
+    
+    // Pequeña validación para asegurar que el monto sea un número válido
+    if (isNaN(amount) || amount <= 0) {
+        alert('Please enter a valid amount.');
+        return;
+    }
+
+    // Por ahora, solo implementamos la lógica de CREAR.
+    // Dejaremos la de editar para más adelante.
+    const transactionId = transactionIdInput.value;
+
+    if (transactionId) {
+        // Lógica de edición (la haremos después si es necesario)
+        // ...
+    } else {
+        // Lógica de creación
+        // 3. Creamos el objeto de la nueva transacción
+        const newTransaction = {
+            id: Date.now(), // ID único temporal
+            description: description,
+            amount: amount,
+            type: type,
+            category: category
+        };
+
+        // 4. Añadimos la nueva transacción a nuestro array de datos simulados
+        mockTransactions.push(newTransaction);
+    }
+
+    // 5. Volvemos a "dibujar" TODA la sección de finanzas
+    renderFinanceSummary(mockTransactions);
+    renderTransactions(mockTransactions);
+
+    // 6. Cerramos y reseteamos el modal
+    closeTransactionModal();
 });
