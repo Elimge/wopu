@@ -2,47 +2,60 @@
 
 // 1. Esperar a que el DOM esté completamente cargado.
 document.addEventListener('DOMContentLoaded', function() {
-
-    // 2. Obtener la referencia al formulario de login.
     const loginForm = document.getElementById('login-form');
 
-    loginForm.addEventListener('submit', function(event) {
-        
-        // a. Prevenir el comportamiento por defecto.
+    loginForm.addEventListener('submit', async function(event) {
         event.preventDefault();
 
-        // b. Recoger los valores (email y password).
-        const formData = new FormData(loginForm);
-        const userData = Object.fromEntries(formData.entries());
+        try {
+            // 1. Recoger los datos del formulario (email y password)
+            const formData = new FormData(loginForm);
+            const email = formData.get('email');
+            const password = formData.get('password');
 
-        console.log('Sending data for login:', userData);
+            // 2. PREPARAR EL CUERPO EN FORMATO x-www-form-urlencoded
+            // Usamos URLSearchParams, que es la forma moderna y correcta de crear este formato.
+            const body = new URLSearchParams();
+            body.append('username', email); // La API espera 'username', le pasamos el email.
+            body.append('password', password);
+            // La especificación OAuth2 a menudo incluye 'grant_type', es bueno añadirlo.
+            body.append('grant_type', 'password');
 
-        // c. Usar fetch para enviar los datos al endpoint de login.
-        // ¡OJO! El endpoint ahora es /api/login
-        fetch('/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Server response:', data);
+            console.log('Sending form-urlencoded data to API...');
 
-            if (data.success) {
+            // 3. Realizar la llamada fetch con await y los nuevos headers/body
+            const response = await fetch('https://wopu-production.up.railway.app/api/login', {
+                method: 'POST',
+                headers: {
+                    // ¡OJO! El Content-Type ha cambiado
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: body 
+            });
+
+            // 4. MANEJAR LA RESPUESTA
+            if (response.ok) {
+                const data = await response.json(); // La respuesta exitosa es JSON
+                console.log('Login successful, token received:', data);
+                
+                // --- ¡PASO CRUCIAL! ---
+                // Guardamos el token de acceso en el almacenamiento local del navegador.
+                // Esta es la "llave" que usaremos para futuras peticiones.
+                localStorage.setItem('accessToken', data.access_token);
+
                 alert('Login successful! Redirecting to dashboard...');
-                // ¡OJO! La redirección ahora es hacia el dashboard.
-                // Usamos ../ para subir un nivel desde la carpeta /pages
-                window.location.href = '../dashboard.html'; // Aunque aún no exista, lo dejamos listo.
+                window.location.href = '../dashboard.html';
+
             } else {
-                // El mensaje de error es específico para el login.
-                alert('Error: ' + data.message);
+                const errorData = await response.json();
+                console.error('Login error:', errorData);
+                // El error de login puede ser genérico
+                alert('Error: ' + (errorData.detail || 'Invalid credentials.'));
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again later.');
-        });
+
+        } catch (error) {
+            console.error('Network Error:', error);
+            alert('Could not connect to the server. Please try again later.');
+        }
     });
 });
