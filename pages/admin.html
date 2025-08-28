@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - User Management</title>
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/pages/admin.css" />
+  </head>
+  <body>
+    <header class="main-header">
+      <nav class="navbar">
+        <a href="../index.html" class="navbar-logo">
+          <img src="../assets/images/logo.png" alt="Wopu Logo" />
+          <span>Wopu Admin</span>
+        </a>
+        <a href="../dashboard.html" class="btn btn-secondary"
+          >Back to Dashboard</a
+        >
+      </nav>
+    </header>
+    <main class="admin-container">
+      <h1>User Management</h1>
+      <div class="table-wrapper">
+        <table class="user-table">
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="user-list">
+            <!-- Los usuarios se cargarán aquí con JS -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+    <script src="../assets/js/admin.js" defer></script>
+  </body>
+</html>
