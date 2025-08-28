@@ -1,0 +1,34 @@
+<!-- app/views/tasks.html -->
+
+<div class="dashboard-header">
+  <h1>My Tasks (Eisenhower Matrix)</h1>
+  <button id="add-task-btn" class="btn btn-primary">Add New Task</button>
+</div>
+
+<div id="task-matrix" class="task-matrix">
+  <!-- Dentro de <div id="task-matrix" class="task-matrix"> -->
+  <div class="quadrant important-urgent">
+    <h3 class="quadrant-title">Important & Urgent</h3>
+    <div id="tasks-iu" class="task-list">
+      <!-- Tareas generadas por JS irán aquí -->
+    </div>
+  </div>
+  <div class="quadrant important-not-urgent">
+    <h3 class="quadrant-title">Important & Not Urgent</h3>
+    <div id="tasks-inu" class="task-list">
+      <!-- Tareas generadas por JS irán aquí -->
+    </div>
+  </div>
+  <div class="quadrant not-important-urgent">
+    <h3 class="quadrant-title">Not Important & Urgent</h3>
+    <div id="tasks-niu" class="task-list">
+      <!-- Tareas generadas por JS irán aquí -->
+    </div>
+  </div>
+  <div class="quadrant not-important-not-urgent">
+    <h3 class="quadrant-title">Not Important & Not Urgent</h3>
+    <div id="tasks-ninu" class="task-list">
+      <!-- Tareas generadas por JS irán aquí -->
+    </div>
+  </div>
+</div>

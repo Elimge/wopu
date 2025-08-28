@@ -1,0 +1,46 @@
+<!-- app/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wopu App</title>
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <!-- CSS específico para nuestro cascarón -->
+    <link rel="stylesheet" href="assets/css/app-shell.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar de Navegación Lateral -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="navbar-logo">
+                    <img src="assets/images/logo.svg" alt="Wopu Logo">
+                    <span>Wopu</span>
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <!-- Usamos data-view para que nuestro JS sepa qué vista cargar -->
+                    <li><a href="#tasks" data-view="tasks" class="nav-link active">Tasks</a></li>
+                    <li><a href="#finances" data-view="finances" class="nav-link">Finances</a></li>
+                    <li><a href="#admin" data-view="admin" class="nav-link">Admin</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenido Principal que cambiará dinámicamente -->
+        <main class="main-content">
+            <div id="view-container">
+                <!-- Las vistas (tasks.html, finances.html) se cargarán aquí -->
+                <h1>Loading...</h1>
+            </div>
+        </main>
+    </div>
+
+    <!-- El Cerebro de nuestra App -->
+    <script src="main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!-- app/views/finances.html -->
+
+<div class="dashboard-header">
+  <h1>My Finances</h1>
+  <!-- Dentro de la segunda .dashboard-column, dentro del .dashboard-header -->
+  <div class="finance-filters">
+    <label for="transaction-category-filter">Filter by:</label>
+    <select id="transaction-category-filter">
+      <option value="all">All Categories</option>
+      <!-- Las demás categorías se generarán dinámicamente con JavaScript -->
+    </select>
+  </div>
+  <button id="add-transaction-btn" class="btn btn-primary">
+    Add Transaction
+  </button>
+</div>
+
+<!-- Aquí mostraremos un resumen -->
+<div id="finance-summary" class="finance-summary">
+  <!-- El resumen se generará con JS -->
+</div>
+
+<!-- Contenedor para el gráfico -->
+<div class="chart-container">
+  <canvas id="finance-chart"></canvas>
+</div>
+
+<!-- Aquí irá la lista de transacciones -->
+<div id="transaction-list" class="transaction-list">
+  <!-- Las transacciones se generarán con JS -->
+</div>

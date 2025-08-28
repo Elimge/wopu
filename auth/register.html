@@ -1,25 +1,27 @@
-<!-- pages/login.html -->
+<!-- pages/register.html -->
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Log In - Wopu</title>
-    <link rel="stylesheet" href="../assets/css/main.css" />
-    <link rel="stylesheet" href="../assets/css/pages/auth.css" />
+    <title>Create Account - Wopu</title>
+    <link rel="stylesheet" href="../app/assets/css/main.css" />
+    <link rel="stylesheet" href="../public/css/auth.css" />
   </head>
   <body>
     <main class="auth-container">
       <div class="auth-form-wrapper">
         <a href="../index.html" class="auth-logo">
-          <img src="../assets/images/logo.png" alt="Wopu Logo" />
+          <img src="../app/assets/images/logo.svg" alt="Wopu Logo" />
           <span>Wopu</span>
         </a>
-        <h2>Welcome Back!</h2>
-        <p class="auth-subtitle">Log in to access your dashboard.</p>
+        <h2>Create your account</h2>
+        <p class="auth-subtitle">
+          Start your journey to personal and financial growth.
+        </p>
 
-        <form id="login-form" class="auth-form">
+        <form id="register-form" class="auth-form">
           <div class="form-group">
             <label for="email">Email</label>
             <input
@@ -36,21 +38,22 @@
               type="password"
               id="password"
               name="password"
-              placeholder="Enter your password"
+              placeholder="Create a strong password"
               required
             />
           </div>
           <button type="submit" class="btn btn-primary btn-full-width">
-            Log In
+            Create Account
           </button>
         </form>
 
         <p class="auth-redirect">
-          Don't have an account? <a href="register.html">Sign Up</a>
+          Already have an account? <a href="login.html">Log In</a>
         </p>
       </div>
     </main>
 
-    <script src="../assets/js/auth/login.js" defer></script>
+    <!-- Dejamos esto listo para el Paso 4 -->
+    <script src="../public/js/auth/register.js" defer></script>
   </body>
 </html>

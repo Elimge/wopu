@@ -1,0 +1,64 @@
+/* app/assets/css/pages/app-shell.css */ 
+
+/* --- Estilos del Cascarón de la Aplicación --- */
+
+body {
+    background-color: #f8f9fa; /* Un fondo global ligeramente gris */
+}
+
+.app-container {
+    display: flex;
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 240px;
+    background-color: #fff;
+    border-right: 1px solid #e9ecef;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header .navbar-logo {
+    justify-content: flex-start; /* Alinea el logo a la izquierda */
+}
+
+.sidebar-nav {
+    margin-top: 30px;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav .nav-link {
+    display: block;
+    padding: 12px 15px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #495057;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-nav .nav-link:hover {
+    background-color: #f1f3f5;
+}
+
+.sidebar-nav .nav-link.active {
+    background-color: #0052cc;
+    color: #fff;
+}
+
+
+/* --- Contenido Principal --- */
+.main-content {
+    flex-grow: 1; /* Ocupa el resto del espacio */
+    padding: 40px;
+    overflow-y: auto; /* Permite scroll si el contenido es largo */
+}
