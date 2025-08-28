@@ -295,3 +295,13 @@
     font-size: 14px;
     margin: 5px; /* Adding a margin to not shock */ 
 }
+
+/* --- Estilos del Contenedor del Gráfico --- */
+.chart-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    height: 300px; /* Damos una altura fija */
+    position: relative; /* Necesario para que el gráfico sea responsivo */
+}

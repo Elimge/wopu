@@ -1,0 +1,42 @@
+.admin-container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+.admin-container h1 {
+    margin-bottom: 20px;
+}
+
+.table-wrapper {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    overflow: hidden; /* Para que los bordes redondeados se apliquen a la tabla */
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse; /* Une los bordes de las celdas */
+}
+
+.user-table th, .user-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.user-table thead {
+    background-color: #f9f9f9;
+}
+
+.user-table th {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+}
+
+.user-table tbody tr:last-child td {
+    border-bottom: none;
+}

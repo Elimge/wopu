@@ -82,6 +82,11 @@
           <!-- El resumen se generará con JS -->
         </div>
 
+        <!-- Contenedor para el gráfico -->
+        <div class="chart-container">
+          <canvas id="finance-chart"></canvas>
+        </div>
+
         <!-- Aquí irá la lista de transacciones -->
         <div id="transaction-list" class="transaction-list">
           <!-- Las transacciones se generarán con JS -->
@@ -90,7 +95,8 @@
     </main>
 
     <!-- Aquí irá nuestro Modal para crear/editar tareas -->
-
+    <!-- Librería Chart.js desde un CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="assets/js/dashboard.js" defer></script>
     <!-- Nuevo JS -->
     <!-- Modal para Crear/Editar Tareas -->

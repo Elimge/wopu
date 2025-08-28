@@ -30,6 +30,28 @@ const quadrantMap = {
     ninu: 'tasks-ninu'
 };
 
+async function fetchAndRenderTasks() {
+    console.log("Fetching tasks...");
+    try {
+        // ---- ESTA ES LA PARTE QUE CAMBIARÁ ----
+        // POR AHORA: Usamos los datos simulados.
+        const tasks = mockTasks;
+
+        // EN EL FUTURO: La reemplazaremos con la llamada real a la API.
+        // const response = await fetch('/api/tasks', {
+        //     headers: { 'Authorization': 'Bearer ' + localStorage.getItem('accessToken') }
+        // });
+        // if (!response.ok) throw new Error('Failed to fetch tasks');
+        // const tasks = await response.json();
+        // -----------------------------------------
+
+        renderTasks(tasks);
+    } catch (error) {
+        console.error("Error fetching tasks:", error);
+        // Podríamos mostrar un mensaje de error en la interfaz
+    }
+}
+
 // Función para renderizar (dibujar) todas las tareas en la matriz
 function renderTasks(tasks) {
     // Primero, limpiamos todas las listas para evitar duplicados
@@ -161,11 +183,70 @@ categoryFilterEl.addEventListener('change', function() {
     renderTransactions(filteredTransactions);
 });
 
+// --- Lógica para Renderizar el Gráfico de Finanzas ---
+
+let financeChart = null; // Variable global para guardar la instancia del gráfico
+
+function renderFinanceChart(transactions) {
+    const ctx = document.getElementById('finance-chart');
+    if (!ctx) return; // Salir si el elemento no existe
+
+    // Calculamos los totales
+    const totalIncome = transactions
+        .filter(t => t.type === 'income')
+        .reduce((sum, t) => sum + t.amount, 0);
+
+    const totalExpenses = transactions
+        .filter(t => t.type === 'expense')
+        .reduce((sum, t) => sum + t.amount, 0);
+
+    // Si ya existe un gráfico, lo destruimos para evitar errores al redibujar
+    if (financeChart) {
+        financeChart.destroy();
+    }
+    
+    // Creamos el nuevo gráfico usando la librería Chart.js
+    financeChart = new Chart(ctx, {
+        type: 'bar', // Tipo de gráfico de barras
+        data: {
+            labels: ['Income', 'Expenses'],
+            datasets: [{
+                label: 'Total ($)',
+                data: [totalIncome, totalExpenses],
+                backgroundColor: [
+                    'rgba(40, 167, 69, 0.7)', // Verde
+                    'rgba(211, 47, 47, 0.7)'  // Rojo
+                ],
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Income vs. Expenses Overview'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
 // Llamamos a la función cuando el script se carga para mostrar las tareas iniciales
-renderTasks(mockTasks);
+fetchAndRenderTasks();
 renderFinanceSummary(mockTransactions);
 renderTransactions(mockTransactions);
 populateCategoryFilter(mockTransactions); 
+renderFinanceChart(mockTransactions);
 
 
 // --- Lógica del Modal ---
@@ -398,6 +479,8 @@ transactionForm.addEventListener('submit', function(event) {
     // 5. Volvemos a "dibujar" TODA la sección de finanzas
     renderFinanceSummary(mockTransactions);
     renderTransactions(mockTransactions);
+
+    renderFinanceChart(mockTransactions);
 
     // 6. Cerramos y reseteamos el modal
     closeTransactionModal();
