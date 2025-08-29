@@ -46,28 +46,32 @@ function renderFinanceSummary(transactions) {
 
 // Función para mostrar la lista de transacciones
 function renderTransactions(transactions) {
-    // Limpiamos la lista primero
     transactionListEl.innerHTML = '';
-
     if (transactions.length === 0) {
         transactionListEl.innerHTML = '<p class="no-transactions">No transactions yet.</p>';
         return;
     }
-    
+
     transactions.forEach(t => {
         const transactionEl = document.createElement('div');
         transactionEl.className = 'transaction-item';
-        
+        // ¡Importante! Añadimos el ID aquí para poder encontrarlo después
+        transactionEl.setAttribute('data-transaction-id', t.id);
+
         const sign = t.type === 'income' ? '+' : '-';
         const amountClass = t.type === 'income' ? 'income' : 'expenses';
 
         transactionEl.innerHTML = `
-            <div class="transaction-details">
+            <div class="transaction-info">
                 <span class="transaction-category">${t.category}</span>
                 <p class="transaction-description">${t.description}</p>
             </div>
-            <div class="transaction-amount">
+            <div class="transaction-value">
                 <p class="${amountClass}">${sign}$${t.amount.toFixed(2)}</p>
+            </div>
+            <div class="transaction-actions">
+                <button class="btn-icon btn-edit">✏️</button>
+                <button class="btn-icon btn-delete">🗑️</button>
             </div>
         `;
         transactionListEl.appendChild(transactionEl);
@@ -81,11 +85,11 @@ const categoryFilterEl = document.getElementById('transaction-category-filter');
 
 // Función para poblar el dropdown de filtro con categorías únicas
 function populateCategoryFilter(transactions) {
-    // Usamos un Set para obtener solo los nombres de categoría únicos
     const categories = new Set(transactions.map(t => t.category));
-    
-    // Mantenemos la opción "All Categories" que ya está en el HTML
-    // y solo añadimos las nuevas
+
+    // Limpiamos las opciones viejas, excepto la primera ("All Categories")
+    categoryFilterEl.innerHTML = '<option value="all">All Categories</option>';
+
     categories.forEach(category => {
         const option = document.createElement('option');
         option.value = category;
@@ -95,9 +99,9 @@ function populateCategoryFilter(transactions) {
 }
 
 // Event listener para cuando el usuario cambia la selección del filtro
-categoryFilterEl.addEventListener('change', function() {
+categoryFilterEl.addEventListener('change', function () {
     const selectedCategory = categoryFilterEl.value;
-    
+
     let filteredTransactions;
 
     if (selectedCategory === 'all') {
@@ -134,7 +138,7 @@ function renderFinanceChart(transactions) {
     if (financeChart) {
         financeChart.destroy();
     }
-    
+
     // Creamos el nuevo gráfico usando la librería Chart.js
     financeChart = new Chart(ctx, {
         type: 'bar', // Tipo de gráfico de barras
@@ -170,3 +174,127 @@ function renderFinanceChart(transactions) {
         }
     });
 }
+
+// --- Lógica del Modal de Transacciones ---
+
+const transactionModal = document.getElementById('transaction-modal');
+const addTransactionBtn = document.getElementById('add-transaction-btn');
+const closeTransactionModalBtn = document.getElementById('close-transaction-modal-btn');
+const transactionForm = document.getElementById('transaction-form');
+
+function openTransactionModal() {
+    transactionModal.style.display = 'block';
+}
+
+function closeTransactionModal() {
+    transactionModal.style.display = 'none';
+    transactionForm.reset();
+}
+
+addTransactionBtn.addEventListener('click', openTransactionModal);
+closeTransactionModalBtn.addEventListener('click', closeTransactionModal);
+
+// --- Lógica para Editar y Eliminar Transacciones ---
+
+// Referencias para el modal de borrado
+const deleteTransactionModal = document.getElementById('delete-transaction-modal');
+const confirmDeleteBtn = document.getElementById('confirm-delete-transaction-btn');
+const cancelDeleteBtn = document.getElementById('cancel-delete-transaction-btn');
+let transactionToDeleteId = null;
+
+// Función para abrir/cerrar el modal de confirmación
+function openDeleteModal() { deleteTransactionModal.style.display = 'block'; }
+function closeDeleteModal() { deleteTransactionModal.style.display = 'none'; transactionToDeleteId = null; }
+
+cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+
+// Evento principal en la lista de transacciones (delegación)
+transactionListEl.addEventListener('click', function (event) {
+    const target = event.target;
+    const transactionItem = target.closest('.transaction-item');
+    if (!transactionItem) return;
+
+    const transactionId = Number(transactionItem.dataset.transactionId);
+
+    // Si se hace clic en el botón de eliminar
+    if (target.closest('.btn-delete')) {
+        transactionToDeleteId = transactionId;
+        openDeleteModal();
+    } else if (target.closest('.btn-edit')) {
+        const transactionToEdit = mockTransactions.find(t => t.id === transactionId);
+        if (transactionToEdit) {
+            // Llenamos el modal existente con los datos
+            document.getElementById('transaction-modal-title').textContent = 'Edit Transaction';
+            document.getElementById('transaction-id').value = transactionToEdit.id;
+            document.getElementById('transaction-description').value = transactionToEdit.description;
+            document.getElementById('transaction-amount').value = transactionToEdit.amount;
+            document.getElementById('transaction-category').value = transactionToEdit.category;
+            document.querySelector(`input[name="type"][value="${transactionToEdit.type}"]`).checked = true;
+
+            openTransactionModal();
+        }
+    }
+});
+
+// Evento para el botón de confirmación final
+confirmDeleteBtn.addEventListener('click', function () {
+    if (transactionToDeleteId !== null) {
+        // 1. Eliminar la transacción del array
+        mockTransactions = mockTransactions.filter(t => t.id !== transactionToDeleteId);
+
+        // 2. Volver a renderizar TODO para que se actualice la interfaz
+        renderFinanceSummary(mockTransactions);
+        renderTransactions(mockTransactions);
+        renderFinanceChart(mockTransactions);
+
+        closeDeleteModal();
+    }
+});
+
+transactionModal.addEventListener('click', function (event) {
+    if (event.target === transactionModal) {
+        closeTransactionModal();
+    }
+});
+
+// --- Lógica para Guardar Transacciones ---
+
+transactionForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const description = document.getElementById('transaction-description').value;
+    const amount = parseFloat(document.getElementById('transaction-amount').value);
+    const type = document.querySelector('input[name="type"]:checked').value;
+    const category = document.getElementById('transaction-category').value;
+    const transactionId = document.getElementById('transaction-id').value;
+
+    if (isNaN(amount) || amount <= 0) {
+        alert('Please enter a valid amount.');
+        return;
+    }
+
+    if (transactionId) {
+        // LÓGICA DE EDICIÓN
+        const index = mockTransactions.findIndex(t => t.id == transactionId);
+        if (index !== -1) {
+            mockTransactions[index] = { id: Number(transactionId), description, amount, type, category };
+        }
+    } else {
+        // LÓGICA DE CREACIÓN
+        mockTransactions.push({ id: Date.now(), description, amount, type, category });
+    }
+
+    // Volvemos a renderizar todo
+    renderFinanceSummary(mockTransactions);
+    renderTransactions(mockTransactions);
+    renderFinanceChart(mockTransactions);
+    populateCategoryFilter(mockTransactions); // Para actualizar por si hay nuevas categorías
+
+    closeTransactionModal();
+});
+
+// --- Carga Inicial de la Vista de Finanzas ---
+renderFinanceSummary(mockTransactions);
+renderTransactions(mockTransactions);
+populateCategoryFilter(mockTransactions);
+renderFinanceChart(mockTransactions);

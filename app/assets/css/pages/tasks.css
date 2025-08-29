@@ -60,60 +60,6 @@
     margin-left: 15px; /* Espacio entre el texto y los botones */
 }
 
-.btn-icon {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    padding: 5px;
-    border-radius: 50%;
-    transition: background-color 0.2s ease;
-}
-
-.btn-icon:hover {
-    background-color: #f0f0f0;
-}
-
-/* --- Estilos del Modal --- */
-.modal {
-    display: none; /* Oculto por defecto */
-    position: fixed; /* Se queda fijo en la pantalla */
-    z-index: 1000; /* Se asegura de que esté por encima de todo */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto; /* Permite scroll si el contenido es muy grande */
-    background-color: rgba(0,0,0,0.5); /* Fondo negro semi-transparente */
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 15% auto; /* 15% desde arriba y centrado horizontalmente */
-    padding: 30px;
-    border: 1px solid #888;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.close-btn {
-    color: #aaa;
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close-btn:hover,
-.close-btn:focus {
-    color: #000;
-    text-decoration: none;
-}
 
 /* Reutilizamos los estilos de formulario de auth.css, pero añadimos un select */
 #task-form select {
@@ -153,20 +99,28 @@
     cursor: pointer;
 }
 
-/* --- Estilos del Modal de Confirmación --- */
-.modal-actions {
+/* --- Estilos para el Selector de Estado de Tareas --- */
+.task-details {
     display: flex;
-    justify-content: flex-end; /* Alinea los botones a la derecha */
-    gap: 15px;
-    margin-top: 20px;
+    flex-direction: column; /* Pone el título arriba y el selector abajo */
+    gap: 10px;
+    flex-grow: 1;
 }
 
-.btn-danger {
-    background-color: #D32F2F; /* Rojo de peligro */
-    color: #fff;
-    border: 1px solid #D32F2F;
+.task-status-selector {
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #555;
+    background-color: #f9f9f9;
+    align-self: flex-start; /* Hace que no ocupe todo el ancho */
+    cursor: pointer;
 }
 
-.btn-danger:hover {
-    background-color: #b71c1c;
+/* --- Estilo Visual para Tareas Completadas --- */
+/* Cuando una tarjeta tiene la clase .status-completed, tachamos su párrafo de título */
+.task-card.status-completed p {
+    text-decoration: line-through;
+    color: #888;
 }

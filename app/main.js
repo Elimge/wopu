@@ -24,6 +24,11 @@ document.addEventListener('DOMContentLoaded', function () {
             css: ['assets/css/pages/admin.css'], // Aunque no lo hayamos creado aún, lo dejamos listo
             js: 'views/admin.js' // Igual aquí
         },
+        'not-found': {
+            html: 'views/not-found.html',
+            css: ['assets/css/pages/not-found.css'],
+            js: null
+        }
     };
 
     // --- NUEVO: Función para cargar y mostrar una vista ---
@@ -74,8 +79,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- NUEVO: Función para manejar la navegación ---
     function handleNavigation() {
-        // Obtenemos el "hash" de la URL (ej: #tasks) y quitamos el #
-        const view = window.location.hash.substring(1) || 'tasks'; // 'tasks' por defecto
+        let view = window.location.hash.substring(1) || 'tasks';
+
+        // --- AQUÍ ESTÁ EL CAMBIO ---
+        // Si la ruta solicitada no existe en nuestro objeto de rutas,
+        // forzamos la vista a ser 'not-found'.
+        if (!routes[view]) {
+            view = 'not-found';
+            window.location.hash = 'not-found'; // Actualizamos la URL también
+        }
 
         setActiveLink(view);
         loadView(view);
@@ -84,13 +96,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- Función para manejar el estado activo de los enlaces (sin cambios) ---
     function setActiveLink(view) {
         navLinks.forEach(link => {
-            if (link.dataset.view === view) {
+            // Se añade la condición view !== 'not-found'
+            if (link.dataset.view === view && view !== 'not-found') {
                 link.classList.add('active');
             } else {
                 link.classList.remove('active');
             }
         });
     }
+
 
     // --- Modificamos el listener de clics ---
     sidebarNav.addEventListener('click', function (event) {

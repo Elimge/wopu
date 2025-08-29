@@ -1,17 +1,5 @@
 // app/views/tasks.js 
 
-// Mock Data (Datos Simulados)
-// Esto simula la respuesta que obtendríamos de la API de Nelson.
-let mockTasks = [
-    { id: 1, title: 'Prepare presentation for Monday meeting', category: 'iu' }, // iu: Important & Urgent
-    { id: 2, title: 'Plan Q4 marketing strategy', category: 'inu' }, // inu: Important & Not Urgent
-    { id: 3, title: 'Answer non-critical emails', category: 'niu' }, // niu: Not Important & Urgent
-    { id: 4, title: 'Organize desktop files', category: 'ninu' }, // ninu: Not Important & Not Urgent
-    { id: 5, title: 'Pay electricity bill', category: 'iu' },
-    { id: 6, title: 'Research new project management tools', category: 'inu' },
-    { id: 7, title: 'Renew library books', category: 'ninu' },
-];
-
 // Mapeo de categorías a los IDs de los contenedores del HTML
 const quadrantMap = {
     iu: 'tasks-iu',
@@ -20,33 +8,73 @@ const quadrantMap = {
     ninu: 'tasks-ninu'
 };
 
+// Mock Data (Datos Simulados)
+// Esto simula la respuesta que obtendríamos de la API de Nelson.
+let mockTasks = [
+    { id: 1, title: 'Prepare presentation for Monday meeting', category: 'iu', status: 'progress' },
+    { id: 2, title: 'Plan Q4 marketing strategy', category: 'inu', status: 'todo' },
+    { id: 3, title: 'Answer non-critical emails', category: 'niu', status: 'completed' },
+    { id: 4, title: 'Organize desktop files', category: 'ninu', status: 'todo' },
+    { id: 5, title: 'Pay electricity bill', category: 'iu', status: 'completed' },
+    { id: 6, title: 'Research new project management tools', category: 'inu', status: 'progress' },
+    { id: 7, title: 'Renew library books', category: 'ninu', status: 'todo' },
+];
+
 // Función para renderizar (dibujar) todas las tareas en la matriz
+// --- NUEVA FUNCIÓN AUXILIAR ---
+// Esta función nos ayuda a crear el <select> y marcar la opción correcta
+function createTaskStatusSelector(task) {
+    const statuses = {
+        'todo': 'To Do',
+        'progress': 'In Progress',
+        'completed': 'Completed'
+    };
+    
+    let options = '';
+    for (const [value, text] of Object.entries(statuses)) {
+        // Marcamos el status actual de la tarea como 'selected'
+        const isSelected = value === task.status ? 'selected' : '';
+        options += `<option value="${value}" ${isSelected}>${text}</option>`;
+    }
+
+    // Le añadimos un data-task-id para poder identificar la tarea al cambiar el estado
+    return `
+        <select class="task-status-selector" data-task-id="${task.id}">
+            ${options}
+        </select>
+    `;
+}
+
 function renderTasks(tasks) {
-    // Primero, limpiamos todas las listas para evitar duplicados
+    // Limpiamos las listas (sin cambios)
     Object.values(quadrantMap).forEach(quadrantId => {
-        document.getElementById(quadrantId).innerHTML = '';
+        const quadrant = document.getElementById(quadrantId);
+        if (quadrant) quadrant.innerHTML = '';
     });
 
-    // Luego, iteramos sobre cada tarea y la añadimos a su cuadrante correspondiente
     tasks.forEach(task => {
         const quadrantId = quadrantMap[task.category];
         const taskQuadrant = document.getElementById(quadrantId);
         
-        // Creamos el HTML para la tarjeta de la tarea
-        const taskCard = document.createElement('div');
-        taskCard.className = 'task-card';
-        taskCard.setAttribute('data-task-id', task.id);
-        
-        taskCard.innerHTML = `
-            <p>${task.title}</p>
-            <div class="task-actions">
-                <button class="btn-icon btn-edit">✏️</button>
-                <button class="btn-icon btn-delete">🗑️</button>
-            </div>
-        `;
-
-        // Añadimos la tarjeta al DOM
-        taskQuadrant.appendChild(taskCard);
+        if (taskQuadrant) {
+            const taskCard = document.createElement('div');
+            // Añadimos una clase basada en el estado para futuros estilos
+            taskCard.className = `task-card status-${task.status}`;
+            taskCard.setAttribute('data-task-id', task.id);
+            
+            // --- HTML DE LA TARJETA ACTUALIZADO ---
+            taskCard.innerHTML = `
+                <div class="task-details">
+                    <p>${task.title}</p>
+                    ${createTaskStatusSelector(task)} 
+                </div>
+                <div class="task-actions">
+                    <button class="btn-icon btn-edit">✏️</button>
+                    <button class="btn-icon btn-delete">🗑️</button>
+                </div>
+            `;
+            taskQuadrant.appendChild(taskCard);
+        }
     });
 }
 
@@ -114,10 +142,16 @@ addTaskBtn.addEventListener('click', openModal); // Abrir al hacer clic en "Add 
 closeModalBtn.addEventListener('click', closeModal); // Cerrar al hacer clic en la 'X'
 
 // 4. (Opcional pero recomendado) Cerrar el modal si el usuario hace clic fuera del contenido.
-window.addEventListener('click', function(event) {
-    if (event.target == taskModal) {
+taskModal.addEventListener('click', function(event) {
+    if (event.target === taskModal) { // Solo si se hace clic en el fondo del modal
         closeModal();
     }
+});
+
+deleteConfirmModal.addEventListener('click', function(event) {
+    if (event.target === deleteConfirmModal) { // Solo si se hace clic en el fondo del modal
+        closeDeleteModal();
+    } 
 });
 
 // --- Lógica para Guardar Tareas (Crear y Editar) ---
@@ -214,6 +248,32 @@ taskMatrix.addEventListener('click', function(event) {
     }
 });
 
+// AÑADIMOS ESTE NUEVO LISTENER para el evento 'change'
+taskMatrix.addEventListener('change', function(event) {
+    const target = event.target;
+
+    // Nos aseguramos de que el cambio ocurrió en un selector de estado
+    if (target.classList.contains('task-status-selector')) {
+        // Obtenemos el ID de la tarea y el nuevo estado
+        const taskId = Number(target.dataset.taskId);
+        const newStatus = target.value;
+
+        console.log(`Task ${taskId} status changed to: ${newStatus}`);
+
+        // Buscamos la tarea en nuestro array de datos
+        const taskToUpdate = mockTasks.find(task => task.id === taskId);
+
+        if (taskToUpdate) {
+            // Actualizamos el estado de la tarea en el array
+            taskToUpdate.status = newStatus;
+            
+            // Volvemos a renderizar todas las tareas para que se apliquen los cambios visuales
+            // (como el tachado para las tareas completadas)
+            renderTasks(mockTasks);
+        }
+    }
+});
+
 cancelDeleteBtn.addEventListener('click', closeDeleteModal);
 
 // Evento para el botón de confirmación final
@@ -224,3 +284,5 @@ confirmDeleteBtn.addEventListener('click', function() {
         closeDeleteModal(); // Cerramos el modal después de borrar
     }
 });
+
+fetchAndRenderTasks(); 
