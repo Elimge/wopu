@@ -1,58 +1,58 @@
 
 /**
  * File: app/services/authService.js
- * Description: Provides authentication services for user registration and login using the Wopu API.
+ * Description: Provides authentication services for user registration and login using the local Wopu API.
  */
 
-const API_BASE_URL = 'https://wopu-production.up.railway.app/api';
+const API_URL = 'http://localhost:3000/api/auth';
 
 /**
- * Registers a new user with the provided email and password.
- * @param {string} email - User email address
- * @param {string} password - User password
- * @returns {Promise<string>} Success message from the API
- * @throws {Error} If registration fails
+ * Registers a new user by making a POST request to the backend API.
+ * @param {string} email - The user's email.
+ * @param {string} password - The user's password.
+ * @returns {Promise<object>} The JSON response from the server.
+ * @throws {Error} If registration fails.
  */
-async function register(email, password) {
-    const response = await fetch(`${API_BASE_URL}/register`, {
+export async function register(email, password) {
+    const response = await fetch(`${API_URL}/register`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
     });
 
-    if (response.ok) {
-    return await response.text(); // Returns success message
-    } else {
+    if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.detail[0]?.msg || 'Registration failed.');
+        throw new Error(errorData.message || 'Failed to register');
     }
+
+    return response.json();
 }
 
 /**
- * Logs in a user with the provided email and password.
- * @param {string} email - User email address
- * @param {string} password - User password
- * @returns {Promise<Object>} Object containing access_token and token_type
- * @throws {Error} If login fails
+ * Logs in a user by making a POST request to the backend API.
+ * @param {string} email - The user's email.
+ * @param {string} password - The user's password.
+ * @returns {Promise<object>} An object containing the access token.
+ * @throws {Error} If login fails.
  */
-async function login(email, password) {
-    const body = new URLSearchParams();
-    body.append('username', email);
-    body.append('password', password);
-
-    const response = await fetch(`${API_BASE_URL}/login`, {
+export async function login(email, password) {
+    const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: body
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
     });
 
-    if (response.ok) {
-    return await response.json(); // Returns { access_token, token_type }
-    } else {
+    if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.detail || 'Invalid credentials.');
+        throw new Error(errorData.message || 'Failed to login');
     }
-}
 
-// Export authentication functions for use in other modules
-export { register, login };
+    const data = await response.json();
+    // The backend returns `accessToken`, so we adapt the frontend to use it.
+    // The original frontend expects `access_token`, so we perform this mapping.
+    return { access_token: data.accessToken };
+}

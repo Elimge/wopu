@@ -1,4 +1,3 @@
-
 /**
  * File: public/js/auth/register.js
  *
@@ -6,7 +5,7 @@
  * Uses the register service and manages redirection after successful registration.
  */
 
-import { register } from '../../app/services/authService.js';
+import { register } from '../../../app/services/authService.js';
 
 
 /**

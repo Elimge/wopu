@@ -1,35 +1,51 @@
-
 /**
  * File: app/views/complete-profile.js
- * Description: Handles the complete profile form submission, simulates saving user data, and redirects to the tasks dashboard.
+ *
+ * This script handles the logic for the complete profile page.
+ * It manages form submission to update the user's profile information.
  */
 
-console.log("Complete Profile script loaded.");
+document.addEventListener('DOMContentLoaded', () => {
+    const completeProfileForm = document.getElementById('complete-profile-form');
 
-const profileForm = document.getElementById('complete-profile-form');
+    if (completeProfileForm) {
+        completeProfileForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
 
-/**
- * Handles the complete profile form submission, simulates saving user data, and redirects to the tasks dashboard.
- * @param {Event} event - The form submit event
- */
-profileForm.addEventListener('submit', function(event) {
-    event.preventDefault();
+            const fullName = document.getElementById('full-name').value;
+            const token = localStorage.getItem('accessToken');
 
-    const userProfile = {
-        firstName: document.getElementById('first-name').value,
-        lastName: document.getElementById('last-name').value,
-        dob: document.getElementById('dob').value,
-        personalGoal: document.getElementById('personal-goal').value,
-        financialGoal: document.getElementById('financial-goal').value,
-    };
+            if (!token) {
+                alert('Authentication error. Please log in again.');
+                window.location.href = '#login'; // Redirect to login if no token
+                return;
+            }
 
-    console.log("Profile data to save:", userProfile);
+            try {
+                const response = await fetch('http://localhost:3000/api/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` // Send the token for authentication
+                    },
+                    body: JSON.stringify({ fullName })
+                });
 
-    // Simulate API call and save profile completion flag in localStorage
-    localStorage.setItem('wopu_profile_completed', 'true');
-    localStorage.setItem('wopu_user_profile', JSON.stringify(userProfile));
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to update profile.');
+                }
 
-    // Redirect user to the tasks dashboard
-    alert('Profile complete! Welcome to Wopu.');
-    window.location.hash = 'tasks';
+                // Mark profile as completed in localStorage to avoid being sent back here
+                localStorage.setItem('wopu_profile_completed', 'true');
+
+                alert('Profile updated successfully!');
+                window.location.hash = 'tasks'; // Redirect to the tasks view
+
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert(`Error: ${error.message}`);
+            }
+        });
+    }
 });

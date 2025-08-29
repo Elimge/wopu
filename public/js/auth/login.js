@@ -1,4 +1,3 @@
-
 /**
  * File: public/js/auth/login.js
  *
@@ -6,7 +5,7 @@
  * Uses the login service and manages redirection based on profile completion.
  */
 
-import { login } from '../../app/services/authService.js';
+import { login } from '../../../app/services/authService.js';
 
 
 /**
