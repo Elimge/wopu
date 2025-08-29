@@ -1,4 +1,3 @@
-
 /**
  * File: app/main.js
  *
@@ -6,11 +5,11 @@
  * Handles view routing, dynamic loading of HTML/CSS/JS, navigation, and onboarding tour logic.
  */
 
+import { decodeToken } from './utils/jwt.js';
+
 const viewContainer = document.getElementById('view-container');
 const navLinks = document.querySelectorAll('.nav-link');
-/**
- * Shepherd tour instance for onboarding. Accessible throughout the app.
- */
+
 const tour = new Shepherd.Tour({
     useModalOverlay: true,
     defaultStepOptions: {
@@ -23,7 +22,7 @@ const tour = new Shepherd.Tour({
 const routes = {
     'tasks': {
         html: 'views/tasks.html',
-    css: ['assets/css/pages/tasks.css'], // Use arrays in case a view needs multiple CSS files
+        css: ['assets/css/pages/tasks.css'],
         js: 'views/tasks.js'
     },
     'finances': {
@@ -33,8 +32,8 @@ const routes = {
     },
     'admin': {
         html: 'views/admin.html',
-    css: ['assets/css/pages/admin.css'], // Placeholder for future admin CSS
-    js: 'views/admin.js' // Placeholder for future admin JS
+        css: ['assets/css/pages/admin.css'],
+        js: 'views/admin.js'
     },
     'not-found': {
         html: 'views/not-found.html',
@@ -43,69 +42,47 @@ const routes = {
     },
     'complete-profile': {
         html: 'views/complete-profile.html',
-    css: ['assets/css/pages/complete-profile.css'],
-    js: 'views/complete-profile.js' // Will be created in the next step
+        css: ['assets/css/pages/complete-profile.css'],
+        js: 'views/complete-profile.js'
     }
 };
 
-/**
- * Dynamically loads and displays a view (HTML, CSS, JS) based on the given route.
- * Cleans up previous resources to avoid conflicts.
- * @param {string} view - The name of the view to load.
- * @returns {Promise<void>}
- */
 async function loadView(view) {
     const route = routes[view];
-
     if (!route) {
         console.error(`View "${view}" not found.`);
         viewContainer.innerHTML = '<h1>404 - Page Not Found</h1>';
         return;
     }
-
-    // Remove previous dynamic CSS and JS to avoid conflicts
     document.querySelectorAll('.dynamic-style, .dynamic-script').forEach(el => el.remove());
-
     try {
-    // 1. Load HTML content
         const response = await fetch(route.html);
         if (!response.ok) throw new Error(`Failed to load HTML: ${response.statusText}`);
         const htmlContent = await response.text();
         viewContainer.innerHTML = htmlContent;
-
-    // 2. Dynamically load CSS
         route.css.forEach(cssPath => {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
             link.href = cssPath;
-            link.classList.add('dynamic-style'); // Clase para poder removerlo después
+            link.classList.add('dynamic-style');
             document.head.appendChild(link);
         });
-
-    // 3. Dynamically load JS
-    // Add a timestamp to avoid cache issues during development
-        const script = document.createElement('script');
-        script.src = `${route.js}?t=${new Date().getTime()}`;
-        script.type = 'module'; // Usar 'module' es una buena práctica moderna
-        script.classList.add('dynamic-script'); // Clase para poder removerlo después
-        document.body.appendChild(script);
-
+        if (route.js) { // Check if a JS file exists for the route
+            const script = document.createElement('script');
+            script.src = `${route.js}?t=${new Date().getTime()}`;
+            script.type = 'module';
+            script.classList.add('dynamic-script');
+            document.body.appendChild(script);
+        }
         console.log(`Successfully loaded view: ${view}`);
-
     } catch (error) {
         console.error('Error loading view:', error);
         viewContainer.innerHTML = `<h1>Error loading page. Please try again.</h1>`;
     }
 }
 
-
-/**
- * Sets the active navigation link based on the current view.
- * @param {string} view - The current view name.
- */
 function setActiveLink(view) {
     navLinks.forEach(link => {
-        // Only set active if not 'not-found'
         if (link.dataset.view === view && view !== 'not-found') {
             link.classList.add('active');
         } else {
@@ -114,17 +91,52 @@ function setActiveLink(view) {
     });
 }
 
+/**
+ * Updates the welcome message in the sidebar with the user's name from localStorage.
+ * @param {string|number} userId - The ID of the current user.
+ */
+function updateWelcomeMessage(userId) {
+    const welcomeElement = document.getElementById('user-welcome-message');
+    if (welcomeElement && userId) {
+        const userName = localStorage.getItem(`wopu_user_name_${userId}`);
+        if (userName) {
+            // If the name is found, display it.
+            welcomeElement.innerHTML = `Welcome, <br><strong>${userName}</strong>`;
+            welcomeElement.style.display = 'block'; // Make sure it's visible
+        } else {
+            // If no name is stored yet, hide the element.
+            welcomeElement.style.display = 'none';
+        }
+    }
+}
+
 let isTourRunning = false;
 
-
-/**
- * Handles navigation changes (hash changes) and loads the appropriate view.
- * Also starts the onboarding tour if needed.
- */
 function handleNavigation() {
+    const token = localStorage.getItem('accessToken');
+    const decodedToken = decodeToken(token);
+    const userRole = decodedToken ? decodedToken.user.role : null;
+    const userId = decodedToken ? decodedToken.user.id : null;
+
+    // Update the welcome message on every view change.
+    updateWelcomeMessage(userId);
+
+    const adminLink = document.querySelector('a[data-view="admin"]');
+    if (adminLink) {
+        if (userRole === 'admin') {
+            adminLink.style.display = 'block';
+        } else {
+            adminLink.style.display = 'none';
+        }
+    }
+
     let view = window.location.hash.substring(1) || 'tasks';
 
-    // If the requested route does not exist, force 'not-found' view
+    if (view === 'admin' && userRole !== 'admin') {
+        view = 'tasks';
+        window.location.hash = 'tasks';
+    }
+
     if (!routes[view]) {
         view = 'not-found';
         window.location.hash = 'not-found';
@@ -132,12 +144,6 @@ function handleNavigation() {
 
     setActiveLink(view);
     loadView(view);
-
-    // Launch onboarding tour if not completed and on first view
-    if (!isTourRunning && !localStorage.getItem('wopu_tutorial_completed')) {
-        isTourRunning = true;
-        setTimeout(startOnboardingTour, 500);
-    }
 }
 
 
@@ -225,7 +231,12 @@ function startOnboardingTour() {
 
     // Mark tutorial as completed in localStorage and reset flag
     const onTourEnd = () => {
-        localStorage.setItem('wopu_tutorial_completed', 'true');
+        const token = localStorage.getItem('accessToken');
+        const decoded = decodeToken(token);
+        if (decoded && decoded.user) {
+            // Mark tutorial as completed for THIS SPECIFIC USER
+            localStorage.setItem(`wopu_tutorial_completed_${decoded.user.id}`, 'true');
+        }
         isTourRunning = false;
     };
     tour.on('complete', onTourEnd);
@@ -234,13 +245,12 @@ function startOnboardingTour() {
     tour.start();
 }
 
-
 // Run main logic once DOM is ready
 document.addEventListener('DOMContentLoaded', function () {
     console.log("App shell loaded. Main.js is running.");
 
+    // --- Navigation Listeners ---
     const sidebarNav = document.querySelector('.sidebar-nav');
-
     sidebarNav.addEventListener('click', function (event) {
         if (event.target.matches('.nav-link')) {
             event.preventDefault();
@@ -248,9 +258,37 @@ document.addEventListener('DOMContentLoaded', function () {
             window.location.hash = viewName;
         }
     });
-
     window.addEventListener('hashchange', handleNavigation);
 
-    // Initial load
+    // Initial page load
     handleNavigation();
+
+    // --- Logout Button Logic ---
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            const confirmLogout = confirm('Are you sure you want to log out?');
+            if (confirmLogout) {
+                localStorage.removeItem('accessToken');
+                window.location.href = '../auth/login.html';
+            }
+        });
+    }
+
+    // --- ONBOARDING TOUR LOGIC (RUNS ONLY ONCE) ---
+    // This is the correct place to decide if the tour should start.
+    const token = localStorage.getItem('accessToken');
+    const decoded = decodeToken(token);
+    if (decoded && decoded.user) {
+        const userId = decoded.user.id;
+        const tutorialCompleted = localStorage.getItem(`wopu_tutorial_completed_${userId}`) === 'true';
+        const profileCompleted = localStorage.getItem(`wopu_profile_completed_${userId}`) === 'true';
+
+        // Start the tour only if the profile is complete and the tour hasn't been seen.
+        if (profileCompleted && !tutorialCompleted) {
+            // Use a small delay to ensure the initial view (e.g., tasks) has loaded its elements.
+            setTimeout(startOnboardingTour, 500);
+        }
+    }
 });

@@ -47,8 +47,13 @@ function renderAllComponents(transactions) {
  * @param {Array} transactions - Array of transaction objects
  */
 function renderFinanceSummary(transactions) {
-    const totalIncome = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
-    const totalExpenses = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+    const totalIncome = transactions
+        .filter(t => t.type === 'income')
+        .reduce((sum, t) => sum + parseFloat(t.amount), 0);
+    const totalExpenses = transactions
+        .filter(t => t.type === 'expense')
+        .reduce((sum, t) => sum + parseFloat(t.amount), 0);
+
     financeSummaryEl.innerHTML = `
         <div class="summary-card"><h4>Total Income</h4><p class="income">$${totalIncome.toFixed(2)}</p></div>
         <div class="summary-card"><h4>Total Expenses</h4><p class="expenses">$${totalExpenses.toFixed(2)}</p></div>
@@ -72,9 +77,11 @@ function renderTransactions(transactions) {
         transactionEl.dataset.transactionId = t.id;
         const sign = t.type === 'income' ? '+' : '-';
         const amountClass = t.type === 'income' ? 'income' : 'expenses';
+        const amount = parseFloat(t.amount); 
+
         transactionEl.innerHTML = `
             <div class="transaction-info"><span class="transaction-category">${t.category}</span><p class="transaction-description">${t.description}</p></div>
-            <div class="transaction-value"><p class="${amountClass}">${sign}$${t.amount.toFixed(2)}</p></div>
+            <div class="transaction-value"><p class="${amountClass}">${sign}$${amount.toFixed(2)}</p></div>
             <div class="transaction-actions"><button class="btn-icon btn-edit">✏️</button><button class="btn-icon btn-delete">🗑️</button></div>
         `;
         transactionListEl.appendChild(transactionEl);
@@ -88,8 +95,12 @@ function renderTransactions(transactions) {
 function renderFinanceChart(transactions) {
     const ctx = document.getElementById('finance-chart');
     if (!ctx) return;
-    const totalIncome = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
-    const totalExpenses = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+    const totalIncome = transactions
+        .filter(t => t.type === 'income')
+        .reduce((sum, t) => sum + parseFloat(t.amount), 0);
+    const totalExpenses = transactions
+        .filter(t => t.type === 'expense')
+        .reduce((sum, t) => sum + parseFloat(t.amount), 0);
     if (financeChart) financeChart.destroy();
     financeChart = new Chart(ctx, {
         type: 'bar',
@@ -177,6 +188,7 @@ function openModalForEdit(transactionId) {
         document.getElementById('transaction-description').value = transaction.description;
         document.getElementById('transaction-amount').value = transaction.amount;
         document.getElementById('transaction-category').value = transaction.category;
+        document.getElementById('transaction-date').value = new Date(transaction.transaction_date).toISOString().split('T')[0];
         document.querySelector(`input[name="type"][value="${transaction.type}"]`).checked = true;
         transactionModal.style.display = 'block';
     }
@@ -205,7 +217,8 @@ transactionForm.addEventListener('submit', async (event) => {
         description: document.getElementById('transaction-description').value,
         amount: parseFloat(document.getElementById('transaction-amount').value),
         type: document.querySelector('input[name="type"]:checked').value,
-        category: document.getElementById('transaction-category').value
+        category: document.getElementById('transaction-category').value,
+        transaction_date: document.getElementById('transaction-date').value
     };
     if (isNaN(transactionData.amount) || transactionData.amount <= 0) {
         return alert('Please enter a valid amount.');

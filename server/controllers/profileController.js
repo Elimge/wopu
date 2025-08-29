@@ -33,7 +33,7 @@ const profileController = {
      * @param {object} res - The Express response object.
      */
     async updateProfile(req, res) {
-        const { fullName } = req.body;
+        const { fullName, dateOfBirth, personalGoal, financialGoal } = req.body;
         const userId = req.user.id;
 
         if (!fullName) {
@@ -41,7 +41,7 @@ const profileController = {
         }
 
         try {
-            await Profile.update(userId, { fullName });
+            await Profile.update(userId, { fullName, dateOfBirth, personalGoal, financialGoal });
             res.json({ message: 'Profile updated successfully.' });
         } catch (error) {
             console.error('Update profile error:', error);

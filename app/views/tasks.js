@@ -69,7 +69,7 @@ function renderTasks(tasks) {
  * @returns {string} HTML string for the status selector
  */
 function createTaskStatusSelector(task) {
-    const statuses = { 'todo': 'To Do', 'progress': 'In Progress', 'completed': 'Completed' };
+    const statuses = { 'To Do': 'To Do', 'In Progress': 'In Progress', 'Completed': 'Completed' };
     let options = '';
     for (const [value, text] of Object.entries(statuses)) {
         const isSelected = value === task.status ? 'selected' : '';
@@ -154,20 +154,25 @@ taskForm.addEventListener('submit', async (event) => {
     const title = document.getElementById('task-title').value;
     const isImportant = document.querySelector('input[name="importance"]:checked').value === 'true';
     const isUrgent = document.querySelector('input[name="urgency"]:checked').value === 'true';
-    let category = '';
-    if (isImportant && isUrgent) category = 'iu';
-    else if (isImportant && !isUrgent) category = 'inu';
-    else if (!isImportant && isUrgent) category = 'niu';
-    else category = 'ninu';
-    
+
     const taskId = taskIdInput.value;
-    const taskData = { title, category };
+    
+    // The data object that the backend API expects
+    const taskData = { 
+        title, 
+        isImportant, 
+        isUrgent 
+    };
 
     try {
         if (taskId) {
+            // When updating, we might also send the status
+            const existingTask = (await getAllTasks()).find(t => t.id == taskId);
+            taskData.status = existingTask.status; // Preserve existing status on update
             await updateTask(taskId, taskData);
         } else {
-            await createTask({ ...taskData, status: 'todo' });
+            // When creating, the backend will handle the default status
+            await createTask(taskData);
         }
         await fetchAndRenderTasks();
         closeModal();

@@ -1,4 +1,3 @@
-
 <!--
   File: app/index.html
   
@@ -8,61 +7,65 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wopu App</title>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wopu App</title>
   <!-- Global CSS -->
   <link rel="stylesheet" href="assets/css/main.css" />
   <!-- App shell specific CSS -->
   <link rel="stylesheet" href="assets/css/app-shell.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/css/shepherd.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
-  <body>
-    <div class="app-container">
-  <!-- Sidebar navigation -->
-      <aside class="sidebar">
-        <div class="sidebar-header">
-          <a href="../index.html" class="navbar-logo">
-            <img src="assets/images/logo.svg" alt="Wopu Logo" />
-            <span>Wopu</span>
-          </a>
-        </div>
-        <nav class="sidebar-nav">
-          <ul>
-            <!-- data-view attribute is used by JS to determine which view to load -->
-            <li>
-              <a href="#tasks" data-view="tasks" class="nav-link active"
-                >Tasks</a
-              >
-            </li>
-            <li>
-              <a href="#finances" data-view="finances" class="nav-link"
-                >Finances</a
-              >
-            </li>
-            <li>
-              <a href="#admin" data-view="admin" class="nav-link">Admin</a>
-            </li>
-          </ul>
-        </nav>
-      </aside>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/css/shepherd.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 
-  <!-- Main content that will change dynamically -->
-      <main class="main-content">
-        <div id="view-container">
-          <!-- Views (tasks.html, finances.html, etc.) will be loaded here -->
-          <h1>Loading...</h1>
-        </div>
-      </main>
-    </div>
+<body>
+  <div class="app-container">
+    <!-- Sidebar navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../index.html" class="navbar-logo">
+          <img src="assets/images/logo.svg" alt="Wopu Logo" />
+          <span>Wopu</span>
+        </a>
+      </div>
+      <div id="user-welcome-message" style="padding: 15px; text-align: center; border-bottom: 1px solid #e9ecef; font-weight: 500;">
+        <!-- The user's name will appear here -->
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <!-- data-view attribute is used by JS to determine which view to load -->
+          <li>
+            <a href="#tasks" data-view="tasks" class="nav-link active">Tasks</a>
+          </li>
+          <li>
+            <a href="#finances" data-view="finances" class="nav-link">Finances</a>
+          </li>
+          <li>
+            <a href="#admin" data-view="admin" class="nav-link">Admin</a>
+          </li>
+        </ul>
+      </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
+      <!-- This footer should be the LAST element inside the sidebar -->
+      <div class="sidebar-footer">
+        <button id="logout-btn" class="btn btn-danger btn-full-width">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main content that will change dynamically -->
+    <main class="main-content">
+      <div id="view-container">
+        <!-- Views (tasks.html, finances.html, etc.) will be loaded here -->
+        <h1>Loading...</h1>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
   <!-- Main application logic -->
-  <script src="main.js" defer></script>
-  </body>
+  <script src="main.js" type="module" defer></script>
+</body>
+
 </html>

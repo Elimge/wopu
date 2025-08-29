@@ -57,6 +57,17 @@ const User = {
             [email]
         );
         return rows[0];
+    },
+
+    /**
+     * Finds all users in the database.
+     * @returns {Promise<Array>} An array of user objects.
+     */
+    async findAll() {
+        const [rows] = await db.execute(
+            'SELECT id, email, role, created_at FROM users ORDER BY id ASC'
+        );
+        return rows;
     }
 };
 

@@ -4,6 +4,9 @@
 -- database schema for the Wopu application. It defines tables for users,
 -- profiles, tasks, and financial transactions.
 
+-- Delete the database if it exists to start fresh
+DROP DATABASE IF EXISTS wopu_db; 
+
 -- Create the database if it doesn't exist
 CREATE DATABASE IF NOT EXISTS wopu_db;
 
@@ -32,7 +35,9 @@ CREATE TABLE `profiles` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL UNIQUE,
   `full_name` VARCHAR(255) DEFAULT NULL,
-  `avatar_url` VARCHAR(255) DEFAULT NULL,
+  `date_of_birth` DATE DEFAULT NULL,                        
+  `personal_goal` TEXT DEFAULT NULL,                      
+  `financial_goal` TEXT DEFAULT NULL,                     
   `profile_completed` BOOLEAN NOT NULL DEFAULT FALSE,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -48,11 +53,9 @@ CREATE TABLE `tasks` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `title` VARCHAR(255) NOT NULL,
-  `description` TEXT,
   `is_urgent` BOOLEAN NOT NULL DEFAULT FALSE,
   `is_important` BOOLEAN NOT NULL DEFAULT FALSE,
-  `status` ENUM('pending', 'in_progress', 'completed') NOT NULL DEFAULT 'pending',
-  `due_date` DATETIME DEFAULT NULL,
+  `status` ENUM('To Do', 'In Progress', 'Completed') NOT NULL DEFAULT 'To Do',
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),

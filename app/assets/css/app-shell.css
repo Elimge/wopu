@@ -30,6 +30,7 @@ body {
 
 .sidebar-nav {
     margin-top: 30px;
+    flex-grow: 1;
 }
 
 .sidebar-nav ul {
@@ -92,4 +93,10 @@ body {
 
 .shepherd-wopu-theme .shepherd-button.shepherd-button-secondary:not(:disabled):hover {
     background-color: #e0e0e0;
+}
+
+.sidebar-footer {
+    margin-top: auto; /* Pushes the footer to the bottom */
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
 }

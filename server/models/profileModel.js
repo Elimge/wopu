@@ -25,13 +25,12 @@ const Profile = {
      * Updates a user's profile.
      * @param {number} userId - The ID of the user whose profile is to be updated.
      * @param {object} profileData - An object containing the data to update.
-     * @param {string} profileData.fullName - The user's full name.
      * @returns {Promise<object>} The result object from the database query.
      */
-    async update(userId, { fullName }) {
+    async update(userId, { fullName, dateOfBirth, personalGoal, financialGoal }) {
         const [result] = await db.execute(
-            'UPDATE profiles SET full_name = ?, profile_completed = ? WHERE user_id = ?',
-            [fullName, true, userId]
+            'UPDATE profiles SET full_name = ?, date_of_birth = ?, personal_goal = ?, financial_goal = ?, profile_completed = ? WHERE user_id = ?',
+            [fullName, dateOfBirth, personalGoal, financialGoal, true, userId]
         );
         return result;
     }

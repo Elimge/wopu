@@ -37,11 +37,17 @@ app.use('/api/auth', authRoutes);
 const profileRoutes = require('./routes/profileRoutes');
 app.use('/api/profile', profileRoutes);
 
+// Task routes
+const taskRoutes = require('./routes/taskRoutes');
+app.use('/api/tasks', taskRoutes); // All task routes are protected by authMiddleware
 
-// TODO: Add application routes here
-// const userRoutes = require('./routes/userRoutes');
-// app.use('/api/users', userRoutes);
+// Finance routes
+const financeRoutes = require('./routes/financeRoutes');
+app.use('/api/finances', financeRoutes);
 
+// User management routes (for admins)
+const userRoutes = require('./routes/userRoutes');
+app.use('/api/users', userRoutes);
 
 // --- Server Initialization ---
 const PORT = process.env.PORT || 3000;

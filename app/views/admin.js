@@ -1,23 +1,14 @@
-
 /**
  * File: app/views/admin.js
- * Description: Handles the admin view, including rendering the user list table with mock data.
+ * Description: Handles the admin view, fetching and rendering the user list from the API.
  */
-
 console.log("Admin view script loaded.");
 
 const userListBody = document.getElementById('user-list');
 
-const mockUsers = [
-    { id: 1, email: 'miguel.dev@example.com', role: 'admin' },
-    { id: 2, email: 'test.user1@example.com', role: 'user' },
-    { id: 3, email: 'another.user@example.com', role: 'user' },
-    { id: 4, email: 'qa.tester@example.com', role: 'user' },
-];
-
 /**
  * Renders the list of users in the admin table.
- * @param {Array} users - Array of user objects to render
+ * @param {Array} users - Array of user objects to render.
  */
 function renderUsers(users) {
     if (!userListBody) {
@@ -39,12 +30,45 @@ function renderUsers(users) {
             <td>${user.id}</td>
             <td>${user.email}</td>
             <td><span class="role-badge role-${user.role}">${user.role}</span></td>
-            <td>
-                <button class="btn btn-secondary btn-sm">Edit</button>
-            </td>
         `;
         userListBody.appendChild(row);
     });
 }
 
-renderUsers(mockUsers);
+/**
+ * Fetches the list of all users from the API and calls the render function.
+ * Handles errors, including authorization errors if the user is not an admin.
+ */
+async function fetchAndRenderUsers() {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+        userListBody.innerHTML = `<tr><td colspan="4">Authentication error. Please log in.</td></tr>`;
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:3000/api/users', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            // This will catch 403 Forbidden errors if a non-admin tries to access
+            const errorData = await response.json();
+            throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
+        }
+
+        const users = await response.json();
+        renderUsers(users);
+
+    } catch (error) {
+        console.error("Failed to fetch users:", error);
+        // Display a helpful error message to the user in the table body
+        userListBody.innerHTML = `<tr><td colspan="4" style="color: red; text-align: center;">Error: ${error.message}</td></tr>`;
+    }
+}
+
+// Initial call to fetch and render the data when the view is loaded.
+fetchAndRenderUsers();
