@@ -1,13 +1,16 @@
-<!-- app/views/finances.html -->
+<!--
+  File: app/views/finances.html
+  Description: Finances view. Displays finance summary, chart, transaction list, and modals for managing transactions.
+-->
 
 <div class="dashboard-header">
   <h1>My Finances</h1>
-  <!-- Dentro de la segunda .dashboard-column, dentro del .dashboard-header -->
+  <!-- Finance filters section -->
   <div class="finance-filters">
     <label for="transaction-category-filter">Filter by:</label>
     <select id="transaction-category-filter">
       <option value="all">All Categories</option>
-      <!-- Las demás categorías se generarán dinámicamente con JavaScript -->
+  <!-- Other categories will be generated dynamically with JavaScript -->
     </select>
   </div>
   <button id="add-transaction-btn" class="btn btn-primary">
@@ -17,20 +20,20 @@
 
 <!-- Aquí mostraremos un resumen -->
 <div id="finance-summary" class="finance-summary">
-  <!-- El resumen se generará con JS -->
+  <!-- Summary will be generated with JavaScript -->
 </div>
 
-<!-- Contenedor para el gráfico -->
+<!-- Chart container -->
 <div class="chart-container">
   <canvas id="finance-chart"></canvas>
 </div>
 
 <!-- Aquí irá la lista de transacciones -->
 <div id="transaction-list" class="transaction-list">
-  <!-- Las transacciones se generarán con JS -->
+  <!-- Transactions will be generated with JavaScript -->
 </div>
 
-<!-- Modal para Crear/Editar Transacciones -->
+<!-- Modal for Creating/Editing Transactions -->
 <div id="transaction-modal" class="modal">
   <div class="modal-content">
     <span id="close-transaction-modal-btn" class="close-btn">&times;</span>
@@ -91,7 +94,7 @@
   </div>
 </div>
 
-<!-- Modal de Confirmación para Eliminar Transacción -->
+<!-- Confirmation Modal for Deleting Transaction -->
 <div id="delete-transaction-modal" class="modal">
   <div class="modal-content">
     <h2>Confirm Deletion</h2>

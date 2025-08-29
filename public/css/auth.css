@@ -1,6 +1,10 @@
-/* assets/css/auth.css */
 
-/* --- Authentication Pages Styles (Login/Register) --- */
+/*
+ * File: public/css/auth.css
+ *
+ * Styles for authentication pages (login and register) in the Wopu application.
+ * Provides layout, form, and branding styles for authentication UI components.
+ */
 .auth-container {
     display: flex;
     justify-content: center;

@@ -1,11 +1,13 @@
-// app/views/admin.js
+
+/**
+ * File: app/views/admin.js
+ * Description: Handles the admin view, including rendering the user list table with mock data.
+ */
 
 console.log("Admin view script loaded.");
 
-// Obtenemos la referencia al cuerpo de la tabla
 const userListBody = document.getElementById('user-list');
 
-// Datos simulados (reemplazar con fetch en el futuro)
 const mockUsers = [
     { id: 1, email: 'miguel.dev@example.com', role: 'admin' },
     { id: 2, email: 'test.user1@example.com', role: 'user' },
@@ -13,13 +15,16 @@ const mockUsers = [
     { id: 4, email: 'qa.tester@example.com', role: 'user' },
 ];
 
-// Función para renderizar los usuarios en la tabla
+/**
+ * Renders the list of users in the admin table.
+ * @param {Array} users - Array of user objects to render
+ */
 function renderUsers(users) {
     if (!userListBody) {
         console.error("User list body not found!");
         return;
     }
-    userListBody.innerHTML = ''; // Limpiar la tabla antes de añadir nuevas filas
+    userListBody.innerHTML = '';
 
     if (users.length === 0) {
         const row = document.createElement('tr');
@@ -42,5 +47,4 @@ function renderUsers(users) {
     });
 }
 
-// Carga inicial de usuarios al cargar la vista
 renderUsers(mockUsers);

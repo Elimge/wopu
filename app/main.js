@@ -1,8 +1,16 @@
-// app/main.js
+
+/**
+ * File: app/main.js
+ *
+ * Main entry point for the Wopu frontend application.
+ * Handles view routing, dynamic loading of HTML/CSS/JS, navigation, and onboarding tour logic.
+ */
 
 const viewContainer = document.getElementById('view-container');
 const navLinks = document.querySelectorAll('.nav-link');
-// Definimos la instancia del tour aquí para que sea accesible
+/**
+ * Shepherd tour instance for onboarding. Accessible throughout the app.
+ */
 const tour = new Shepherd.Tour({
     useModalOverlay: true,
     defaultStepOptions: {
@@ -15,7 +23,7 @@ const tour = new Shepherd.Tour({
 const routes = {
     'tasks': {
         html: 'views/tasks.html',
-        css: ['assets/css/pages/tasks.css'], // Usamos arrays por si una vista necesita varios CSS
+    css: ['assets/css/pages/tasks.css'], // Use arrays in case a view needs multiple CSS files
         js: 'views/tasks.js'
     },
     'finances': {
@@ -25,8 +33,8 @@ const routes = {
     },
     'admin': {
         html: 'views/admin.html',
-        css: ['assets/css/pages/admin.css'], // Aunque no lo hayamos creado aún, lo dejamos listo
-        js: 'views/admin.js' // Igual aquí
+    css: ['assets/css/pages/admin.css'], // Placeholder for future admin CSS
+    js: 'views/admin.js' // Placeholder for future admin JS
     },
     'not-found': {
         html: 'views/not-found.html',
@@ -35,12 +43,17 @@ const routes = {
     },
     'complete-profile': {
         html: 'views/complete-profile.html',
-        css: ['assets/css/pages/complete-profile.css'],
-        js: 'views/complete-profile.js' // Lo crearemos en el siguiente paso
+    css: ['assets/css/pages/complete-profile.css'],
+    js: 'views/complete-profile.js' // Will be created in the next step
     }
 };
 
-// --- NUEVO: Función para cargar y mostrar una vista ---
+/**
+ * Dynamically loads and displays a view (HTML, CSS, JS) based on the given route.
+ * Cleans up previous resources to avoid conflicts.
+ * @param {string} view - The name of the view to load.
+ * @returns {Promise<void>}
+ */
 async function loadView(view) {
     const route = routes[view];
 
@@ -50,18 +63,17 @@ async function loadView(view) {
         return;
     }
 
-    // --- Limpieza de Recursos Anteriores ---
-    // Removemos los CSS y JS de la vista anterior para evitar conflictos
+    // Remove previous dynamic CSS and JS to avoid conflicts
     document.querySelectorAll('.dynamic-style, .dynamic-script').forEach(el => el.remove());
 
     try {
-        // 1. Cargar el HTML (como antes)
+    // 1. Load HTML content
         const response = await fetch(route.html);
         if (!response.ok) throw new Error(`Failed to load HTML: ${response.statusText}`);
         const htmlContent = await response.text();
         viewContainer.innerHTML = htmlContent;
 
-        // 2. Cargar los CSS dinámicamente
+    // 2. Dynamically load CSS
         route.css.forEach(cssPath => {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
@@ -70,8 +82,8 @@ async function loadView(view) {
             document.head.appendChild(link);
         });
 
-        // 3. Cargar el JS dinámicamente
-        // Añadimos un timestamp para evitar problemas de caché durante el desarrollo
+    // 3. Dynamically load JS
+    // Add a timestamp to avoid cache issues during development
         const script = document.createElement('script');
         script.src = `${route.js}?t=${new Date().getTime()}`;
         script.type = 'module'; // Usar 'module' es una buena práctica moderna
@@ -86,9 +98,14 @@ async function loadView(view) {
     }
 }
 
+
+/**
+ * Sets the active navigation link based on the current view.
+ * @param {string} view - The current view name.
+ */
 function setActiveLink(view) {
     navLinks.forEach(link => {
-        // Se añade la condición view !== 'not-found'
+        // Only set active if not 'not-found'
         if (link.dataset.view === view && view !== 'not-found') {
             link.classList.add('active');
         } else {
@@ -99,36 +116,40 @@ function setActiveLink(view) {
 
 let isTourRunning = false;
 
+
+/**
+ * Handles navigation changes (hash changes) and loads the appropriate view.
+ * Also starts the onboarding tour if needed.
+ */
 function handleNavigation() {
     let view = window.location.hash.substring(1) || 'tasks';
 
-    // --- AQUÍ ESTÁ EL CAMBIO ---
-    // Si la ruta solicitada no existe en nuestro objeto de rutas,
-    // forzamos la vista a ser 'not-found'.
+    // If the requested route does not exist, force 'not-found' view
     if (!routes[view]) {
         view = 'not-found';
-        window.location.hash = 'not-found'; // Actualizamos la URL también
+        window.location.hash = 'not-found';
     }
 
     setActiveLink(view);
     loadView(view);
 
-    // --- AÑADIR ESTE BLOQUE ---
-    // Lanzador del Tutorial: Lo iniciamos solo si el tutorial no está completado
-    // Y si la vista cargada es la primera del tour (tasks).
+    // Launch onboarding tour if not completed and on first view
     if (!isTourRunning && !localStorage.getItem('wopu_tutorial_completed')) {
-        // Ponemos la bandera a true INMEDIATAMENTE para que no se vuelva a lanzar
         isTourRunning = true;
-        // Lanzamos el tour. Usamos un pequeño retraso para que la primera vista cargue bien.
         setTimeout(startOnboardingTour, 500);
     }
 }
 
+
+/**
+ * Initializes and starts the onboarding tour using Shepherd.js.
+ * Steps cover main features in tasks and finances views.
+ */
 function startOnboardingTour() {
-    // Limpiamos los pasos anteriores por si acaso
+    // Clear previous steps just in case
     tour.steps = [];
 
-    // --- Pasos de la Vista de Tareas ---
+    // --- Tasks View Steps ---
     tour.addStep({
         id: 'step-1-welcome',
         text: `Welcome to Wopu! 👋 Let's take a quick 2-minute tour of the main features.`,
@@ -159,7 +180,7 @@ function startOnboardingTour() {
         buttons: [{ text: 'Back', action: tour.back }, { text: 'Next', action: tour.next }]
     });
 
-    // --- Paso de Navegación ---
+    // --- Navigation Step ---
     tour.addStep({
         id: 'step-5-navigation',
         title: 'Switching Views',
@@ -170,8 +191,7 @@ function startOnboardingTour() {
             {
                 text: 'Go to Finances →',
                 action: async function () {
-                    window.location.hash = 'finances'; // Cambiamos la URL
-                    // Pequeña pausa para asegurar que la vista y su JS se cargan
+                    window.location.hash = 'finances';
                     await new Promise(r => setTimeout(r, 100));
                     tour.next();
                 }
@@ -179,7 +199,7 @@ function startOnboardingTour() {
         ]
     });
 
-    // --- Pasos de la Vista de Finanzas ---
+    // --- Finances View Steps ---
     tour.addStep({
         id: 'step-6-finance-summary',
         title: 'Your Financial Snapshot',
@@ -203,10 +223,10 @@ function startOnboardingTour() {
         buttons: [{ text: 'Finish', action: tour.complete }]
     });
 
-    // Lógica para marcar como completado
+    // Mark tutorial as completed in localStorage and reset flag
     const onTourEnd = () => {
         localStorage.setItem('wopu_tutorial_completed', 'true');
-        isTourRunning = false; // Reseteamos la bandera
+        isTourRunning = false;
     };
     tour.on('complete', onTourEnd);
     tour.on('cancel', onTourEnd);
@@ -214,7 +234,8 @@ function startOnboardingTour() {
     tour.start();
 }
 
-// --- El Código se Ejecuta una vez que el DOM está listo ---
+
+// Run main logic once DOM is ready
 document.addEventListener('DOMContentLoaded', function () {
     console.log("App shell loaded. Main.js is running.");
 
@@ -230,6 +251,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.addEventListener('hashchange', handleNavigation);
 
-    // Carga inicial
+    // Initial load
     handleNavigation();
 });

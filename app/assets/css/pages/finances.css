@@ -1,6 +1,9 @@
-/* app/assets/pages/finances.css */
+/*
+ * File: app/assets/css/pages/finances.css
+ * Description: Styles for the Finances page, including summary cards, transaction list, filters, and chart container.
+ */
 
-/* --- Estilos de la Sección de Finanzas --- */
+/* --- Finance Section Styles --- */
 .finance-summary {
     display: flex;
     justify-content: space-around;
@@ -27,20 +30,19 @@
     font-weight: bold;
 }
 
-.income { color: #28a745; } /* Verde */
-.expenses { color: #D32F2F; } /* Rojo */
-.balance { color: #1976D2; } /* Azul */
+.income { color: #28a745; } /* Green */
+.expenses { color: #D32F2F; } /* Red */
+.balance { color: #1976D2; } /* Blue */
 
 .transaction-list {
     background-color: #f9f9f9;
     border-radius: 8px;
     padding: 10px;
-    height: 50vh; /* Altura fija con scroll */
+    height: 50vh; /* Fixed height with scroll */
     overflow-y: auto;
 }
 
-/* --- Estilos de los Items de Transacción --- */
-/* Reemplazar la regla .transaction-item existente */
+/* --- Transaction Item Styles --- */
 .transaction-item {
     display: flex;
     justify-content: space-between;
@@ -52,7 +54,6 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
-/* Añadir estas nuevas reglas */
 .transaction-info {
     flex-grow: 1;
 }
@@ -90,7 +91,7 @@
     padding-top: 20px;
 }
 
-/* --- Ajustes para el Modal de Transacciones --- */
+/* --- Transaction Modal Adjustments --- */
 #transaction-form input[type="number"] {
     width: 100%;
     padding: 12px 15px;
@@ -99,12 +100,12 @@
     font-size: 16px;
 }
 
-/* --- Estilos para los Filtros de Finanzas --- */
+/* --- Finance Filters Styles --- */
 .finance-filters {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-right: auto; /* Empuja el botón "Add" a la derecha */
+    margin-right: auto; /* Pushes the "Add" button to the right */
     padding-left: 20px;
 }
 
@@ -114,15 +115,15 @@
     border-radius: 6px;
     background-color: #fff;
     font-size: 14px;
-    margin: 5px; /* Adding a margin to not shock */ 
+    margin: 5px; /* Margin for spacing */
 }
 
-/* --- Estilos del Contenedor del Gráfico --- */
+/* --- Chart Container Styles --- */
 .chart-container {
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 20px;
-    height: 300px; /* Damos una altura fija */
-    position: relative; /* Necesario para que el gráfico sea responsivo */
+    height: 300px; /* Fixed height */
+    position: relative; /* Required for responsive chart */
 }

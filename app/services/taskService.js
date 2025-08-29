@@ -1,34 +1,48 @@
-// app/services/taskService.js
+/**
+ * File: app/services/taskService.js
+ * Description: Provides simulated CRUD operations for user tasks using mock data.
+ */
 
-// Importante: Movemos los mock data desde la vista (tasks.js) al servicio.
-// El servicio es ahora la única "fuente de verdad" de los datos.
+// Mock data for tasks. The service is the single source of truth for task data.
 let mockTasks = [
     { id: 1, title: 'Prepare presentation for Monday meeting', category: 'iu', status: 'progress' },
     { id: 2, title: 'Plan Q4 marketing strategy', category: 'inu', status: 'todo' },
     // ... (copia el resto de tus tareas aquí)
 ];
 
-// --- FUNCIONES CRUD SIMULADAS ---
+// --- Simulated CRUD functions ---
 
-// Simula la obtención de todas las tareas del usuario
+/**
+ * Retrieves all user tasks (simulated).
+ * @returns {Promise<Array>} Array of task objects
+ */
 async function getAllTasks() {
     console.log("TaskService: Fetching all tasks (simulated)");
-    // Devolvemos una copia para evitar mutaciones accidentales del array original
-    return [...mockTasks]; 
+    return [...mockTasks]; // Return a copy to avoid accidental mutations
 }
 
-// Simula la creación de una nueva tarea
+/**
+ * Creates a new task (simulated).
+ * @param {Object} taskData - Data for the new task
+ * @returns {Promise<Object>} The created task object
+ */
 async function createTask(taskData) {
     console.log("TaskService: Creating new task (simulated)", taskData);
     const newTask = {
-        id: Date.now(), // El backend generaría esto
+        id: Date.now(), // Backend would generate this
         ...taskData
     };
     mockTasks.push(newTask);
     return newTask;
 }
 
-// Simula la actualización de una tarea existente
+/**
+ * Updates an existing task (simulated).
+ * @param {number} taskId - ID of the task to update
+ * @param {Object} taskData - Updated task data
+ * @returns {Promise<Object>} The updated task object
+ * @throws {Error} If task is not found
+ */
 async function updateTask(taskId, taskData) {
     console.log(`TaskService: Updating task ${taskId} (simulated)`, taskData);
     const index = mockTasks.findIndex(t => t.id == taskId);
@@ -39,12 +53,16 @@ async function updateTask(taskId, taskData) {
     throw new Error("Task not found");
 }
 
-// Simula la eliminación de una tarea
+/**
+ * Deletes a task (simulated).
+ * @param {number} taskId - ID of the task to delete
+ * @returns {Promise<Object>} Success status
+ */
 async function deleteTask(taskId) {
     console.log(`TaskService: Deleting task ${taskId} (simulated)`);
     mockTasks = mockTasks.filter(t => t.id != taskId);
     return { success: true };
 }
 
-// Exportamos las funciones
+// Export CRUD functions for use in other modules
 export { getAllTasks, createTask, updateTask, deleteTask };

@@ -1,4 +1,10 @@
-<!-- app/index.html -->
+
+<!--
+  File: app/index.html
+  
+  Main HTML entry point for the Wopu frontend application.
+  Sets up the app shell, sidebar navigation, and dynamic view container.
+-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,10 +12,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wopu App</title>
-    <!-- CSS Global -->
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <!-- CSS específico para nuestro cascarón -->
-    <link rel="stylesheet" href="assets/css/app-shell.css" />
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <!-- App shell specific CSS -->
+  <link rel="stylesheet" href="assets/css/app-shell.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/css/shepherd.css"
@@ -18,7 +24,7 @@
   </head>
   <body>
     <div class="app-container">
-      <!-- Sidebar de Navegación Lateral -->
+  <!-- Sidebar navigation -->
       <aside class="sidebar">
         <div class="sidebar-header">
           <a href="../index.html" class="navbar-logo">
@@ -28,7 +34,7 @@
         </div>
         <nav class="sidebar-nav">
           <ul>
-            <!-- Usamos data-view para que nuestro JS sepa qué vista cargar -->
+            <!-- data-view attribute is used by JS to determine which view to load -->
             <li>
               <a href="#tasks" data-view="tasks" class="nav-link active"
                 >Tasks</a
@@ -46,17 +52,17 @@
         </nav>
       </aside>
 
-      <!-- Contenido Principal que cambiará dinámicamente -->
+  <!-- Main content that will change dynamically -->
       <main class="main-content">
         <div id="view-container">
-          <!-- Las vistas (tasks.html, finances.html) se cargarán aquí -->
+          <!-- Views (tasks.html, finances.html, etc.) will be loaded here -->
           <h1>Loading...</h1>
         </div>
       </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
-    <!-- El Cerebro de nuestra App -->
-    <script src="main.js" defer></script>
+  <!-- Main application logic -->
+  <script src="main.js" defer></script>
   </body>
 </html>

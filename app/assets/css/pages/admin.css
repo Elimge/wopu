@@ -1,4 +1,8 @@
-/* app/assets/css/pages/admin.css */
+
+/*
+ * File: app/assets/css/pages/admin.css
+ * Description: Styles for the Admin page, including user table, role badges, and small buttons.
+ */
 
 .table-wrapper {
     background-color: #fff;
@@ -8,17 +12,20 @@
 }
 
 .user-table {
+     /* Main user table: full width and no spacing between borders */
     width: 100%;
     border-collapse: collapse;
 }
 
 .user-table th, .user-table td {
+     /* Table cells: padding, left alignment, and bottom border */
     padding: 15px;
     text-align: left;
     border-bottom: 1px solid #e0e0e0;
 }
 
 .user-table thead {
+     /* Table header background */
     background-color: #f9f9f9;
 }
 
@@ -35,6 +42,7 @@
 
 /* Estilos para los 'badges' de rol */
 .role-badge {
+     /* Badge for user roles: pill shape, font styling, and capitalization */
     padding: 4px 8px;
     border-radius: 12px;
     font-size: 12px;
@@ -43,16 +51,19 @@
 }
 
 .role-admin {
+     /* Admin role badge: blue background and text */
     background-color: #e6f0ff;
     color: #0052cc;
 }
 
 .role-user {
+     /* User role badge: gray background and text */
     background-color: #f0f0f0;
     color: #555;
 }
 
 .btn-sm {
+     /* Small button: reduced padding and font size */
     padding: 5px 10px;
     font-size: 12px;
 }

@@ -1,12 +1,19 @@
-/* app/assets/css/pages/complete-profile.css */
+/*
+ * File: app/assets/css/pages/complete-profile.css
+ * Description: Styles for the Complete Profile page, including layout, form container, and form elements.
+ */
+
 .profile-completion-container {
+    /* Main container: centers content both vertically and horizontally */
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
 }
 
+
 .form-wrapper {
+    /* Form container: white background, padding, rounded corners, and shadow */
     background-color: #fff;
     padding: 40px;
     border-radius: 12px;
@@ -15,13 +22,33 @@
     max-width: 600px;
 }
 
-.form-wrapper h2 { text-align: center; font-size: 28px; margin-bottom: 10px; }
-.form-wrapper p { text-align: center; color: #666; margin-bottom: 30px; }
 
-.form-row { display: flex; gap: 20px; }
-.form-row .form-group { flex: 1; }
+.form-wrapper h2 {
+    /* Form title: centered, large font, margin below */
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+.form-wrapper p {
+    /* Form description: centered, muted color, margin below */
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+
+.form-row {
+    /* Row for grouping form fields side by side */
+    display: flex;
+    gap: 20px;
+}
+.form-row .form-group {
+    /* Each form group takes equal width in row */
+    flex: 1;
+}
 
 #complete-profile-form textarea {
+    /* Textarea: full width, padding, border, rounded corners, and resizable vertically */
     width: 100%;
     padding: 12px 15px;
     border: 1px solid #ccc;

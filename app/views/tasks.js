@@ -1,10 +1,13 @@
-// app/views/tasks.js
 
-// Importamos TODAS las funciones que necesitamos del servicio de tareas
+/**
+ * File: app/views/tasks.js
+ * Description: Handles the UI and logic for the Tasks page, including rendering, modals, and event listeners.
+ */
+
+// Import all required functions from the task service
 import { getAllTasks, createTask, updateTask, deleteTask } from '../../app/services/taskService.js';
 
-// --- ELEMENTOS DEL DOM Y VARIABLES ---
-// (Definimos todo lo que necesitamos al principio)
+// --- DOM ELEMENTS AND VARIABLES ---
 
 const quadrantMap = {
     iu: 'tasks-iu',
@@ -24,11 +27,14 @@ const deleteConfirmModal = document.getElementById('delete-confirm-modal');
 const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
 const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
 
-let taskToDeleteId = null; // Para manejar la confirmación de borrado
+let taskToDeleteId = null; // Used for delete confirmation
 
-// --- FUNCIONES DE RENDERIZADO (UI) ---
-// (Estas funciones solo se preocupan de "pintar" la interfaz)
+// --- RENDERING FUNCTIONS (UI) ---
 
+/**
+ * Renders all tasks into their respective quadrants in the UI.
+ * @param {Array} tasks - Array of task objects to render
+ */
 function renderTasks(tasks) {
     Object.values(quadrantMap).forEach(quadrantId => {
         const quadrant = document.getElementById(quadrantId);
@@ -57,6 +63,11 @@ function renderTasks(tasks) {
     });
 }
 
+/**
+ * Creates the HTML for the status selector dropdown for a task.
+ * @param {Object} task - The task object
+ * @returns {string} HTML string for the status selector
+ */
 function createTaskStatusSelector(task) {
     const statuses = { 'todo': 'To Do', 'progress': 'In Progress', 'completed': 'Completed' };
     let options = '';
@@ -67,21 +78,27 @@ function createTaskStatusSelector(task) {
     return `<select class="task-status-selector" data-task-id="${task.id}">${options}</select>`;
 }
 
-// --- LÓGICA DE DATOS ---
-// (Esta función habla con el servicio y dispara el renderizado)
+// --- DATA LOGIC ---
 
+/**
+ * Fetches all tasks and renders them in the UI.
+ * Handles errors if fetching fails.
+ */
 async function fetchAndRenderTasks() {
     try {
         const tasks = await getAllTasks();
         renderTasks(tasks);
     } catch (error) {
         console.error("Error fetching tasks:", error);
-        // Aquí podríamos mostrar un mensaje de error en la UI
+    // Optionally show an error message in the UI
     }
 }
 
-// --- FUNCIONES DE MODALES (UI) ---
+// --- MODAL FUNCTIONS (UI) ---
 
+/**
+ * Opens the modal for creating a new task and resets the form.
+ */
 function openModalForCreate() {
     taskForm.reset();
     taskIdInput.value = '';
@@ -89,6 +106,10 @@ function openModalForCreate() {
     taskModal.style.display = 'block';
 }
 
+/**
+ * Opens the modal for editing an existing task and populates the form.
+ * @param {number} taskId - The ID of the task to edit
+ */
 async function openModalForEdit(taskId) {
     try {
         const tasks = await getAllTasks(); // Obtenemos el estado actual
@@ -110,14 +131,24 @@ async function openModalForEdit(taskId) {
     }
 }
 
+/**
+ * Closes the task modal.
+ */
 function closeModal() { taskModal.style.display = 'none'; }
+/**
+ * Opens the delete confirmation modal for a specific task.
+ * @param {number} taskId - The ID of the task to delete
+ */
 function openDeleteModal(taskId) { taskToDeleteId = taskId; deleteConfirmModal.style.display = 'block'; }
+/**
+ * Closes the delete confirmation modal.
+ */
 function closeDeleteModal() { taskToDeleteId = null; deleteConfirmModal.style.display = 'none'; }
 
 
 // --- EVENT LISTENERS ---
 
-// Listener para el formulario (Crear y Editar)
+// Listener for the form (Create and Edit)
 taskForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const title = document.getElementById('task-title').value;
@@ -134,10 +165,8 @@ taskForm.addEventListener('submit', async (event) => {
 
     try {
         if (taskId) {
-            // No necesitamos el estado (status) aquí, ya que se maneja por separado
             await updateTask(taskId, taskData);
         } else {
-            // Al crear, el estado por defecto será 'todo'
             await createTask({ ...taskData, status: 'todo' });
         }
         await fetchAndRenderTasks();
@@ -148,7 +177,7 @@ taskForm.addEventListener('submit', async (event) => {
     }
 });
 
-// Listener para la matriz de tareas (Delegación para Editar, Eliminar y Cambiar Estado)
+// Listener for the task matrix (delegation for Edit, Delete, and Status Change)
 taskMatrix.addEventListener('click', (event) => {
     const target = event.target;
     const taskCard = target.closest('.task-card');
@@ -177,7 +206,7 @@ taskMatrix.addEventListener('change', async (event) => {
     }
 });
 
-// Listeners para los modales
+// Listeners for modals
 addTaskBtn.addEventListener('click', openModalForCreate);
 closeModalBtn.addEventListener('click', closeModal);
 cancelDeleteBtn.addEventListener('click', closeDeleteModal);
@@ -199,5 +228,5 @@ taskModal.addEventListener('click', (event) => { if (event.target === taskModal)
 deleteConfirmModal.addEventListener('click', (event) => { if (event.target === deleteConfirmModal) closeDeleteModal(); });
 
 
-// --- CARGA INICIAL ---
+// --- INITIAL LOAD ---
 fetchAndRenderTasks();

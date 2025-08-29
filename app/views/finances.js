@@ -1,6 +1,9 @@
-// app/views/finances.js
+/**
+ * File: app/views/finances.js
+ * Description: Handles the UI and logic for the Finances page, including rendering, modals, filtering, and event listeners.
+ */
 
-// 1. Importamos las funciones del servicio. ¡Esta es nuestra única fuente de datos!
+// Import all required functions from the finance service (single source of data)
 import {
     getAllTransactions,
     createTransaction,
@@ -8,7 +11,7 @@ import {
     deleteTransaction
 } from '../../app/services/financeService.js';
 
-// --- ELEMENTOS DEL DOM Y VARIABLES ---
+// --- DOM ELEMENTS AND VARIABLES ---
 
 const financeSummaryEl = document.getElementById('finance-summary');
 const transactionListEl = document.getElementById('transaction-list');
@@ -23,18 +26,26 @@ const cancelDeleteBtn = document.getElementById('cancel-delete-transaction-btn')
 
 let transactionToDeleteId = null;
 let financeChart = null;
-let allTransactions = []; // Un caché local para todas las transacciones, facilita el filtrado
+let allTransactions = []; // Local cache for all transactions, helps with filtering
 
-// --- FUNCIONES DE RENDERIZADO (UI) ---
+// --- RENDERING FUNCTIONS (UI) ---
 
+/**
+ * Renders all finance components: summary, transactions, chart, and filter.
+ * @param {Array} transactions - Array of transaction objects
+ */
 function renderAllComponents(transactions) {
     renderFinanceSummary(transactions);
-    renderTransactions(transactions); // Por defecto, mostramos todo
+    renderTransactions(transactions);
     renderFinanceChart(transactions);
     populateCategoryFilter(transactions);
-    handleFiltering(); // Aplicamos el filtro actual
+    handleFiltering();
 }
 
+/**
+ * Renders the finance summary (income, expenses, balance).
+ * @param {Array} transactions - Array of transaction objects
+ */
 function renderFinanceSummary(transactions) {
     const totalIncome = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
     const totalExpenses = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
@@ -45,6 +56,10 @@ function renderFinanceSummary(transactions) {
     `;
 }
 
+/**
+ * Renders the list of transactions in the UI.
+ * @param {Array} transactions - Array of transaction objects
+ */
 function renderTransactions(transactions) {
     transactionListEl.innerHTML = '';
     if (transactions.length === 0) {
@@ -66,6 +81,10 @@ function renderTransactions(transactions) {
     });
 }
 
+/**
+ * Renders the finance chart (income vs. expenses) using Chart.js.
+ * @param {Array} transactions - Array of transaction objects
+ */
 function renderFinanceChart(transactions) {
     const ctx = document.getElementById('finance-chart');
     if (!ctx) return;
@@ -91,6 +110,10 @@ function renderFinanceChart(transactions) {
     });
 }
 
+/**
+ * Populates the category filter dropdown with unique categories from transactions.
+ * @param {Array} transactions - Array of transaction objects
+ */
 function populateCategoryFilter(transactions) {
     const categories = new Set(transactions.map(t => t.category));
     categoryFilterEl.innerHTML = '<option value="all">All Categories</option>';
@@ -102,8 +125,12 @@ function populateCategoryFilter(transactions) {
     });
 }
 
-// --- LÓGICA DE DATOS ---
+// --- DATA LOGIC ---
 
+/**
+ * Fetches all transactions and renders all finance components.
+ * Handles errors if fetching fails.
+ */
 async function fetchAndRenderAll() {
     try {
         allTransactions = await getAllTransactions();
@@ -113,6 +140,9 @@ async function fetchAndRenderAll() {
     }
 }
 
+/**
+ * Handles filtering of transactions by selected category and renders the filtered list.
+ */
 function handleFiltering() {
     const selectedCategory = categoryFilterEl.value;
     const filtered = selectedCategory === 'all'
@@ -122,8 +152,11 @@ function handleFiltering() {
     renderTransactions(filtered);
 }
 
-// --- FUNCIONES DE MODALES (UI) ---
+// --- MODAL FUNCTIONS (UI) ---
 
+/**
+ * Opens the modal for creating a new transaction and resets the form.
+ */
 function openModalForCreate() {
     transactionForm.reset();
     document.getElementById('transaction-id').value = '';
@@ -131,6 +164,10 @@ function openModalForCreate() {
     transactionModal.style.display = 'block';
 }
 
+/**
+ * Opens the modal for editing an existing transaction and populates the form.
+ * @param {number} transactionId - The ID of the transaction to edit
+ */
 function openModalForEdit(transactionId) {
     const transaction = allTransactions.find(t => t.id == transactionId);
     if (transaction) {
@@ -145,8 +182,18 @@ function openModalForEdit(transactionId) {
     }
 }
 
+/**
+ * Closes the transaction modal.
+ */
 function closeModal() { transactionModal.style.display = 'none'; }
+/**
+ * Opens the delete confirmation modal for a specific transaction.
+ * @param {number} transactionId - The ID of the transaction to delete
+ */
 function openDeleteModal(transactionId) { transactionToDeleteId = transactionId; deleteTransactionModal.style.display = 'block'; }
+/**
+ * Closes the delete confirmation modal.
+ */
 function closeDeleteModal() { transactionToDeleteId = null; deleteTransactionModal.style.display = 'none'; }
 
 // --- EVENT LISTENERS ---
@@ -208,5 +255,5 @@ cancelDeleteBtn.addEventListener('click', closeDeleteModal);
 transactionModal.addEventListener('click', (event) => { if (event.target === transactionModal) closeModal(); });
 deleteTransactionModal.addEventListener('click', (event) => { if (event.target === deleteTransactionModal) closeDeleteModal(); });
 
-// --- CARGA INICIAL ---
+// --- INITIAL LOAD ---
 fetchAndRenderAll();

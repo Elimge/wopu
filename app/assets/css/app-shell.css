@@ -1,17 +1,20 @@
-/* app/assets/css/pages/app-shell.css */ 
+/*
+ * File: app/assets/css/app-shell.css
+ * Description: Styles for the application shell, including sidebar, main content, and Shepherd.js tutorial theme.
+ */
 
-/* --- Estilos del Cascarón de la Aplicación --- */
+/* Application shell base styles */
 
 body {
-    background-color: #f8f9fa; /* Un fondo global ligeramente gris */
+    background-color: #f8f9fa; /* Light global gray background */
 }
 
 .app-container {
     display: flex;
-    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    height: 100vh; /* Full viewport height */
 }
 
-/* --- Sidebar --- */
+/* Sidebar styles */
 .sidebar {
     width: 240px;
     background-color: #fff;
@@ -22,7 +25,7 @@ body {
 }
 
 .sidebar-header .navbar-logo {
-    justify-content: flex-start; /* Alinea el logo a la izquierda */
+    justify-content: flex-start; /* Align logo to the left */
 }
 
 .sidebar-nav {
@@ -56,17 +59,17 @@ body {
 }
 
 
-/* --- Contenido Principal --- */
+/* Main content area */
 .main-content {
-    flex-grow: 1; /* Ocupa el resto del espacio */
+    flex-grow: 1; /* Occupies remaining space */
     padding: 40px;
-    overflow-y: auto; /* Permite scroll si el contenido es largo */
+    overflow-y: auto; /* Enables scroll if content is long */
 }
 
-/* --- Estilos Personalizados para el Tutorial (Shepherd.js) --- */
+/* Custom styles for Shepherd.js tutorial */
 
 .shepherd-wopu-theme .shepherd-header {
-    background-color: #0052cc; /* Azul principal de Wopu */
+    background-color: #0052cc; /* Wopu main blue */
 }
 
 .shepherd-wopu-theme .shepherd-button {
@@ -79,7 +82,7 @@ body {
 }
 
 .shepherd-wopu-theme .shepherd-button:not(:disabled):hover {
-    background-color: #0041a3; /* Un azul un poco más oscuro */
+    background-color: #0041a3; /* Slightly darker blue */
 }
 
 .shepherd-wopu-theme .shepherd-button.shepherd-button-secondary {
