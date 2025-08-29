@@ -62,3 +62,31 @@ body {
     padding: 40px;
     overflow-y: auto; /* Permite scroll si el contenido es largo */
 }
+
+/* --- Estilos Personalizados para el Tutorial (Shepherd.js) --- */
+
+.shepherd-wopu-theme .shepherd-header {
+    background-color: #0052cc; /* Azul principal de Wopu */
+}
+
+.shepherd-wopu-theme .shepherd-button {
+    background-color: #0052cc;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.shepherd-wopu-theme .shepherd-button:not(:disabled):hover {
+    background-color: #0041a3; /* Un azul un poco más oscuro */
+}
+
+.shepherd-wopu-theme .shepherd-button.shepherd-button-secondary {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.shepherd-wopu-theme .shepherd-button.shepherd-button-secondary:not(:disabled):hover {
+    background-color: #e0e0e0;
+}

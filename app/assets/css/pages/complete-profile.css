@@ -1,0 +1,32 @@
+/* app/assets/css/pages/complete-profile.css */
+.profile-completion-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.form-wrapper {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+.form-wrapper h2 { text-align: center; font-size: 28px; margin-bottom: 10px; }
+.form-wrapper p { text-align: center; color: #666; margin-bottom: 30px; }
+
+.form-row { display: flex; gap: 20px; }
+.form-row .form-group { flex: 1; }
+
+#complete-profile-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    resize: vertical;
+    font-family: inherit;
+}

@@ -29,7 +29,7 @@ function createTaskStatusSelector(task) {
         'progress': 'In Progress',
         'completed': 'Completed'
     };
-    
+
     let options = '';
     for (const [value, text] of Object.entries(statuses)) {
         // Marcamos el status actual de la tarea como 'selected'
@@ -55,13 +55,13 @@ function renderTasks(tasks) {
     tasks.forEach(task => {
         const quadrantId = quadrantMap[task.category];
         const taskQuadrant = document.getElementById(quadrantId);
-        
+
         if (taskQuadrant) {
             const taskCard = document.createElement('div');
             // Añadimos una clase basada en el estado para futuros estilos
             taskCard.className = `task-card status-${task.status}`;
             taskCard.setAttribute('data-task-id', task.id);
-            
+
             // --- HTML DE LA TARJETA ACTUALIZADO ---
             taskCard.innerHTML = `
                 <div class="task-details">
@@ -142,20 +142,20 @@ addTaskBtn.addEventListener('click', openModal); // Abrir al hacer clic en "Add 
 closeModalBtn.addEventListener('click', closeModal); // Cerrar al hacer clic en la 'X'
 
 // 4. (Opcional pero recomendado) Cerrar el modal si el usuario hace clic fuera del contenido.
-taskModal.addEventListener('click', function(event) {
+taskModal.addEventListener('click', function (event) {
     if (event.target === taskModal) { // Solo si se hace clic en el fondo del modal
         closeModal();
     }
 });
 
-deleteConfirmModal.addEventListener('click', function(event) {
+deleteConfirmModal.addEventListener('click', function (event) {
     if (event.target === deleteConfirmModal) { // Solo si se hace clic en el fondo del modal
         closeDeleteModal();
-    } 
+    }
 });
 
 // --- Lógica para Guardar Tareas (Crear y Editar) ---
-taskForm.addEventListener('submit', function(event) {
+taskForm.addEventListener('submit', function (event) {
     event.preventDefault();
 
     // Recogemos los valores del formulario (esto es igual que antes)
@@ -202,13 +202,13 @@ taskForm.addEventListener('submit', function(event) {
 
 const taskMatrix = document.getElementById('task-matrix');
 
-taskMatrix.addEventListener('click', function(event) {
+taskMatrix.addEventListener('click', function (event) {
     // Obtenemos el elemento exacto en el que se hizo clic
     const target = event.target;
 
     // Buscamos el elemento .task-card más cercano al objetivo del clic
     const taskCard = target.closest('.task-card');
-    
+
     // Si no encontramos una tarjeta, no hacemos nada
     if (!taskCard) {
         return;
@@ -226,7 +226,7 @@ taskMatrix.addEventListener('click', function(event) {
 
     // --- Lógica de Edición ---
     else if (target.classList.contains('btn-edit')) {
-    // 1. Encontrar la tarea en nuestro array de datos
+        // 1. Encontrar la tarea en nuestro array de datos
         const taskToEdit = mockTasks.find(task => task.id === taskId);
 
         if (taskToEdit) {
@@ -234,14 +234,14 @@ taskMatrix.addEventListener('click', function(event) {
             modalTitle.textContent = 'Edit Task';
             taskIdInput.value = taskToEdit.id; // ¡Muy importante! Guardamos el ID en el campo oculto
             document.getElementById('task-title').value = taskToEdit.title;
-        
+
             // 3. Marcar los radio buttons correctos según la categoría
             const category = taskToEdit.category;
             document.getElementById('important-yes').checked = (category === 'iu' || category === 'inu');
             document.getElementById('important-no').checked = (category === 'niu' || category === 'ninu');
             document.getElementById('urgent-yes').checked = (category === 'iu' || category === 'niu');
             document.getElementById('urgent-no').checked = (category === 'inu' || category === 'ninu');
-        
+
             // 4. Abrir el modal
             openModal();
         }
@@ -249,7 +249,7 @@ taskMatrix.addEventListener('click', function(event) {
 });
 
 // AÑADIMOS ESTE NUEVO LISTENER para el evento 'change'
-taskMatrix.addEventListener('change', function(event) {
+taskMatrix.addEventListener('change', function (event) {
     const target = event.target;
 
     // Nos aseguramos de que el cambio ocurrió en un selector de estado
@@ -266,7 +266,7 @@ taskMatrix.addEventListener('change', function(event) {
         if (taskToUpdate) {
             // Actualizamos el estado de la tarea en el array
             taskToUpdate.status = newStatus;
-            
+
             // Volvemos a renderizar todas las tareas para que se apliquen los cambios visuales
             // (como el tachado para las tareas completadas)
             renderTasks(mockTasks);
@@ -277,7 +277,7 @@ taskMatrix.addEventListener('change', function(event) {
 cancelDeleteBtn.addEventListener('click', closeDeleteModal);
 
 // Evento para el botón de confirmación final
-confirmDeleteBtn.addEventListener('click', function() {
+confirmDeleteBtn.addEventListener('click', function () {
     if (taskToDeleteId !== null) {
         mockTasks = mockTasks.filter(task => task.id !== taskToDeleteId);
         renderTasks(mockTasks);
@@ -285,4 +285,4 @@ confirmDeleteBtn.addEventListener('click', function() {
     }
 });
 
-fetchAndRenderTasks(); 
+fetchAndRenderTasks();

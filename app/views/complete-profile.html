@@ -1,0 +1,32 @@
+<!-- app/views/complete-profile.html -->
+<div class="profile-completion-container">
+    <div class="form-wrapper">
+        <h2>Just one more step!</h2>
+        <p>Complete your profile to get the most out of Wopu.</p>
+        <form id="complete-profile-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" id="first-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last-name" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" required>
+            </div>
+            <div class="form-group">
+                <label for="personal-goal">What's your main personal goal?</label>
+                <textarea id="personal-goal" rows="3" placeholder="e.g., Read 20 books this year"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="financial-goal">What's your main financial goal?</label>
+                <textarea id="financial-goal" rows="3" placeholder="e.g., Save $5,000 for a trip"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full-width">Let's Start!</button>
+        </form>
+    </div>
+</div>
