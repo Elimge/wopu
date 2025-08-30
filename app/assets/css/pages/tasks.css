@@ -1,0 +1,126 @@
+/* app/assets/css/pages/tasks.css */ 
+
+/* --- Estilos de la Matriz de Tareas --- */
+.task-matrix {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
+    grid-template-rows: 1fr 1fr;    /* Dos filas de igual tamaño */
+    gap: 20px;
+    min-height: 70vh; /* Altura mínima para que ocupe espacio */
+}
+
+.quadrant {
+    background-color: #f9f9f9;
+    border: 1px dashed #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.quadrant-title {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* Colores para los títulos de cada cuadrante */
+.important-urgent .quadrant-title { color: #D32F2F; } /* Rojo */
+.important-not-urgent .quadrant-title { color: #1976D2; } /* Azul */
+.not-important-urgent .quadrant-title { color: #F57C00; } /* Naranja */
+.not-important-not-urgent .quadrant-title { color: #388E3C; } /* Verde */
+
+.task-list {
+    flex-grow: 1; /* Permite que la lista de tareas ocupe el espacio disponible */
+    min-height: 100px; /* Espacio mínimo visible */
+}
+
+/* --- Estilos de las Tarjetas de Tarea --- */
+.task-card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-card p {
+    margin: 0;
+    flex-grow: 1; /* El texto ocupa el espacio disponible */
+}
+
+.task-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: 15px; /* Espacio entre el texto y los botones */
+}
+
+
+/* Reutilizamos los estilos de formulario de auth.css, pero añadimos un select */
+#task-form select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: white; /* Asegura fondo blanco en todos los navegadores */
+}
+
+/* --- Estilos para las preguntas de la Matriz en el Modal --- */
+.eisenhower-questions {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.eisenhower-questions .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.radio-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.radio-group label {
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+    cursor: pointer;
+}
+
+/* --- Estilos para el Selector de Estado de Tareas --- */
+.task-details {
+    display: flex;
+    flex-direction: column; /* Pone el título arriba y el selector abajo */
+    gap: 10px;
+    flex-grow: 1;
+}
+
+.task-status-selector {
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #555;
+    background-color: #f9f9f9;
+    align-self: flex-start; /* Hace que no ocupe todo el ancho */
+    cursor: pointer;
+}
+
+/* --- Estilo Visual para Tareas Completadas --- */
+/* Cuando una tarjeta tiene la clase .status-completed, tachamos su párrafo de título */
+.task-card.status-completed p {
+    text-decoration: line-through;
+    color: #888;
+}

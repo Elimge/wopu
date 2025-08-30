@@ -1,0 +1,102 @@
+/*
+ * File: app/assets/css/app-shell.css
+ * Description: Styles for the application shell, including sidebar, main content, and Shepherd.js tutorial theme.
+ */
+
+/* Application shell base styles */
+
+body {
+    background-color: #f8f9fa; /* Light global gray background */
+}
+
+.app-container {
+    display: flex;
+    height: 100vh; /* Full viewport height */
+}
+
+/* Sidebar styles */
+.sidebar {
+    width: 240px;
+    background-color: #fff;
+    border-right: 1px solid #e9ecef;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header .navbar-logo {
+    justify-content: flex-start; /* Align logo to the left */
+}
+
+.sidebar-nav {
+    margin-top: 30px;
+    flex-grow: 1;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav .nav-link {
+    display: block;
+    padding: 12px 15px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #495057;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-nav .nav-link:hover {
+    background-color: #f1f3f5;
+}
+
+.sidebar-nav .nav-link.active {
+    background-color: #0052cc;
+    color: #fff;
+}
+
+
+/* Main content area */
+.main-content {
+    flex-grow: 1; /* Occupies remaining space */
+    padding: 40px;
+    overflow-y: auto; /* Enables scroll if content is long */
+}
+
+/* Custom styles for Shepherd.js tutorial */
+
+.shepherd-wopu-theme .shepherd-header {
+    background-color: #0052cc; /* Wopu main blue */
+}
+
+.shepherd-wopu-theme .shepherd-button {
+    background-color: #0052cc;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.shepherd-wopu-theme .shepherd-button:not(:disabled):hover {
+    background-color: #0041a3; /* Slightly darker blue */
+}
+
+.shepherd-wopu-theme .shepherd-button.shepherd-button-secondary {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.shepherd-wopu-theme .shepherd-button.shepherd-button-secondary:not(:disabled):hover {
+    background-color: #e0e0e0;
+}
+
+.sidebar-footer {
+    margin-top: auto; /* Pushes the footer to the bottom */
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
