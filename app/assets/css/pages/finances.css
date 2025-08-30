@@ -1,0 +1,129 @@
+/*
+ * File: app/assets/css/pages/finances.css
+ * Description: Styles for the Finances page, including summary cards, transaction list, filters, and chart container.
+ */
+
+/* --- Finance Section Styles --- */
+.finance-summary {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.summary-card {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    flex: 1;
+}
+
+.summary-card h4 {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #666;
+}
+
+.summary-card p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.income { color: #28a745; } /* Green */
+.expenses { color: #D32F2F; } /* Red */
+.balance { color: #1976D2; } /* Blue */
+
+.transaction-list {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 10px;
+    height: 50vh; /* Fixed height with scroll */
+    overflow-y: auto;
+}
+
+/* --- Transaction Item Styles --- */
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px 15px;
+    margin: 0 5px 10px 5px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.transaction-info {
+    flex-grow: 1;
+}
+.transaction-value {
+    margin: 0 15px;
+}
+.transaction-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.transaction-category {
+    font-size: 10px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #666;
+    padding: 2px 6px;
+    border-radius: 10px;
+    text-transform: uppercase;
+}
+
+.transaction-description {
+    font-size: 16px;
+    margin-top: 4px;
+}
+
+.transaction-amount p {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.no-transactions {
+    text-align: center;
+    color: #888;
+    padding-top: 20px;
+}
+
+/* --- Transaction Modal Adjustments --- */
+#transaction-form input[type="number"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+/* --- Finance Filters Styles --- */
+.finance-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: auto; /* Pushes the "Add" button to the right */
+    padding-left: 20px;
+}
+
+#transaction-category-filter {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 14px;
+    margin: 5px; /* Margin for spacing */
+}
+
+/* --- Chart Container Styles --- */
+.chart-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    height: 300px; /* Fixed height */
+    position: relative; /* Required for responsive chart */
+}

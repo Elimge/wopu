@@ -1,0 +1,377 @@
+
+/*
+ * File: public/css/landing.css
+ *
+ * Styles for the landing page of the Wopu application.
+ * Includes layout, hero, features, testimonials, CTA, and footer sections.
+ */
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 1200px;
+    margin: 60px auto; 
+    gap: 40px;
+}
+
+.hero-content {
+    flex: 1; /* Allows the text content to take up the available space */
+    max-width: 50%;
+}
+
+.hero-content h1 {
+    font-size: 52px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.hero-content .highlight-blue {
+    color: #0052cc;
+}
+
+.hero-content .highlight-green {
+    color: #28a745; 
+}
+
+.hero-content p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.hero-image {
+    flex: 1;
+    text-align: right; /* Aligns the image to the right of its container */
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 16px;
+}
+
+/* --- Features Section Styles --- */
+.features-section {
+    padding: 80px 0;
+    text-align: center;
+    background-color: #f9f9f9; 
+}
+
+.section-header {
+    max-width: 700px;
+    margin: 0 auto 50px; 
+}
+
+.section-header h2 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.section-header p {
+    font-size: 18px;
+    color: #555;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 30px; 
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: left; 
+}
+
+.feature-card {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.feature-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.feature-icon img {
+    width: 28px;
+    height: 28px;
+}
+
+.icon-blue { background-color: #e6f0ff; }
+.icon-green { background-color: #e9f7ec; }
+.icon-orange { background-color: #fff4e6; }
+.icon-purple { background-color: #f3e8ff; }
+
+.feature-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    color: #666;
+}
+
+/* --- Interface Preview Section Styles --- */
+.interface-preview-section {
+    padding: 80px 0;
+    text-align: center;
+    background-color: #fff;
+}
+
+.preview-tag {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #e6f0ff;
+    color: #0052cc;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.dashboard-image-wrapper {
+    width: 90%;
+    max-width: 1000px; 
+    margin: 40px auto 0;
+    border-radius: 16px;
+    padding-top: 12px; 
+    background: linear-gradient(90deg, #00c6ff, #0072ff); 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0 0 12px 12px; 
+}
+
+/* --- Testimonials Section Styles --- */
+.testimonials-section {
+    padding: 80px 0;
+    background-color: #f9f9f9; 
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 30px;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.testimonial-card {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column; 
+}
+
+.testimonial-rating {
+    color: #f5b700; 
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.testimonial-quote {
+    font-size: 16px;
+    color: #333;
+    flex-grow: 1;
+    margin-bottom: 20px;
+    border: none;
+    padding: 0;
+}
+
+.testimonial-badge {
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    align-self: flex-start; 
+}
+
+.savings-badge { background-color: #e9f7ec; color: #28a745; }
+.productivity-badge { background-color: #e6f0ff; color: #0052cc; }
+.control-badge { background-color: #f0f0f0; color: #555; }
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.testimonial-author img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; 
+}
+
+.author-name {
+    font-weight: bold;
+}
+
+.author-title {
+    font-size: 14px;
+    color: #666;
+}
+
+/* --- CTA Section Styles --- */
+.cta-section {
+    padding: 100px 0;
+    text-align: center;
+    color: #fff; 
+    background: linear-gradient(90deg, #0052cc, #28a745); 
+}
+
+.cta-content {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.cta-content h2 {
+    font-size: 42px;
+    margin-bottom: 20px;
+}
+
+.cta-content p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    opacity: 0.9; 
+}
+
+.cta-benefits {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.cta-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn-light {
+    background-color: #fff;
+    color: #0052cc;
+    border: 1px solid #fff;
+}
+
+.btn-light:hover {
+    background-color: #f0f0f0;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+}
+
+.btn-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1); 
+}
+
+/* --- Footer Styles --- */
+.main-footer {
+    background-color: #1c1c1e; 
+    color: #a9a9b3; 
+    padding: 60px 0;
+}
+
+.footer-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap; 
+    gap: 40px;
+}
+
+.footer-info {
+    flex: 2;
+    min-width: 250px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+.footer-logo img {
+    height: 35px;
+    margin-right: 10px;
+}
+
+.copyright {
+    font-size: 14px;
+}
+
+.footer-links, .footer-social {
+    flex: 1;
+    min-width: 150px;
+}
+
+.footer-links h4, .footer-social h4 {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.footer-links ul li {
+    margin-bottom: 12px;
+}
+
+.footer-links a:hover {
+    color: #fff;
+}
+
+.social-icons a {
+    margin-right: 15px;
+}
+
+.social-icons img {
+    width: 24px;
+    height: 24px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.social-icons a:hover img {
+    opacity: 1;
+}

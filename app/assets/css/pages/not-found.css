@@ -1,0 +1,23 @@
+/*
+ * File: app/assets/css/pages/not-found.css
+ * Description: Styles for the Not Found (404) page container and its elements.
+ */
+.not-found-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70vh; /* Occupies most of the visible height */
+    text-align: center;
+}
+
+.not-found-container h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.not-found-container p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 30px;
+}

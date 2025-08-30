@@ -1,0 +1,179 @@
+/*
+ * File: app/assets/css/main.css
+ * Description: Main global styles for the application, including layout, navigation, buttons, and modals.
+ */
+
+/* Basic reset and global styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* Navigation bar (header) styles */
+.main-header {
+    width: 100%;
+    padding: 20px 0;
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.navbar {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.navbar-logo img {
+    height: 35px; /* Adjust according to your logo size */
+    margin-right: 10px;
+}
+
+.navbar-menu {
+    display: flex;
+    gap: 30px; /* Space between menu items */
+}
+
+.navbar-menu a {
+    color: #555;
+    font-weight: 500;
+    padding: 5px 0;
+}
+
+.navbar-menu a:hover {
+    color: #007bff; /* Highlight color on hover */
+}
+
+.navbar-actions {
+    display: flex;
+    gap: 15px; /* Space between buttons */
+}
+
+/* Reusable button classes */
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #0052cc; /* Main blue button color */
+    color: #fff;
+    border: 1px solid #0052cc;
+}
+
+.btn-primary:hover {
+    background-color: #0041a3;
+}
+
+.btn-secondary {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.btn-secondary:hover {
+    background-color: #f5f5f5;
+}
+
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stays fixed on screen */
+    z-index: 1000; /* Ensures it's above everything */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enables scroll if content is too large */
+    background-color: rgba(0,0,0,0.5); /* Semi-transparent black background */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto; /* 15% from top and horizontally centered */
+    padding: 30px;
+    border: 1px solid #888;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+/* Confirmation modal styles */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end; /* Aligns buttons to the right */
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-danger {
+    background-color: #D32F2F; /* Danger red */
+    color: #fff;
+    border: 1px solid #D32F2F;
+}
+
+.btn-danger:hover {
+    background-color: #b71c1c;
+}
+
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.btn-icon:hover {
+    background-color: #f0f0f0;
+}

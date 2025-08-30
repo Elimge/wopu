@@ -1,0 +1,63 @@
+
+<!--
+  File: auth/login.html
+
+  Login page for the Wopu application.
+  Provides the login form and links to registration and main app resources.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log In - Wopu</title>
+    <link rel="stylesheet" href="../app/assets/css/main.css" />
+    <link rel="stylesheet" href="../public/css/auth.css" />
+  </head>
+  <body>
+    <main class="auth-container">
+      <div class="auth-form-wrapper">
+        <a href="../index.html" class="auth-logo">
+          <img src="../app/assets/images/logo.svg" alt="Wopu Logo" />
+          <span>Wopu</span>
+        </a>
+        <h2>Welcome Back!</h2>
+        <p class="auth-subtitle">Log in to access your dashboard.</p>
+
+        <form id="login-form" class="auth-form">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-full-width">
+            Log In
+          </button>
+        </form>
+
+        <p class="auth-redirect">
+          Don't have an account? <a href="register.html">Sign Up</a>
+        </p>
+      </div>
+    </main>
+
+    <script src="../../app/services/authService.js" type="module"></script>
+    <script src="../public/js/auth/login.js" type="module" defer></script>
+  </body>
+</html>

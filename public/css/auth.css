@@ -1,0 +1,93 @@
+
+/*
+ * File: public/css/auth.css
+ *
+ * Styles for authentication pages (login and register) in the Wopu application.
+ * Provides layout, form, and branding styles for authentication UI components.
+ */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+}
+
+.auth-form-wrapper {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+.auth-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+}
+
+.auth-logo img {
+    height: 40px;
+}
+
+.auth-form-wrapper h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.auth-subtitle {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.auth-form {
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #0052cc;
+    box-shadow: 0 0 0 2px rgba(0, 82, 204, 0.2);
+}
+
+.btn-full-width {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+}
+
+.auth-redirect {
+    margin-top: 25px;
+    color: #555;
+}
+
+.auth-redirect a {
+    color: #0052cc;
+    font-weight: bold;
+}
