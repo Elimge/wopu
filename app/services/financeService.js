@@ -4,7 +4,7 @@
  */
 
 // API base URL for finance-related endpoints
-const API_URL = 'http://localhost:3000/api/finances';
+const API_URL = 'https://wopu-api.onrender.com/api/finances';
 
 /**
  * A helper function to create authorization headers.
