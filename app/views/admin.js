@@ -47,7 +47,7 @@ async function fetchAndRenderUsers() {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/api/users', {
+        const response = await fetch('https://wopu-api.onrender.com/api/users', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
