@@ -25,7 +25,7 @@ if (completeProfileForm) {
         }
 
         try {
-            const response = await fetch('http://localhost:3000/api/profile', {
+            const response = await fetch('https://wopu-api.onrender.com/api/profile', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
