@@ -4,7 +4,7 @@
  * Description: Provides authentication services for user registration and login using the local Wopu API.
  */
 
-const API_URL = 'http://localhost:3000/api/auth';
+const API_URL = 'https://wopu-api.onrender.com/api/auth';
 
 /**
  * Registers a new user by making a POST request to the backend API.
