@@ -16,7 +16,7 @@ const app = express();
 
 // Define allowed origins
 const allowedOrigins = [
-    'https://wopu.netlify.app', 
+    'https://wopu-dev.netlify.app', 
     'http://127.0.0.1:5500'                 
 ];
 
