@@ -4,7 +4,7 @@
  */
 
 // API base URL for task-related endpoints
-const API_URL = 'http://localhost:3000/api/tasks';
+const API_URL = 'https://wopu-api.onrender.com/api/tasks';
 
 /**
  * A helper function to create authorization headers.
